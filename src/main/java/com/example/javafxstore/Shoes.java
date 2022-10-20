@@ -18,8 +18,8 @@ public class Shoes extends Product{
         }
     }
 
-    public Shoes(String name, double price, int nbItems, int shoeSize){
-        super(name, price, nbItems);
+    public Shoes(String name, double sellingPrice, double purchasingPrice, int nbItems, int shoeSize){
+        super(name, "Shoe" ,sellingPrice, purchasingPrice, nbItems);
         try {
             if(shoeSize>54 || shoeSize<34){
                 throw new Product.CustomizedException("Wrong size");
@@ -35,7 +35,7 @@ public class Shoes extends Product{
         return "Shoes{" +
                 "number= " + this.getNumber() +
                 ", name= '" + this.getName() + '\'' +
-                ", price= " + this.getPrice() +
+                ", price= " + this.getSellingPrice() +
                 "€, nbItems= " + this.getNbItems() +
                 ", Shoe size= " + shoeSize +
                 '}';
@@ -43,6 +43,6 @@ public class Shoes extends Product{
 
     @Override
     public void applyDiscount() {
-        super.setPrice(Math.round(super.getPrice()*0.7*100.0)/100.0);
+        super.setSellingPrice(Math.round(super.getSellingPrice()*0.7*100.0)/100.0);
     }
 }

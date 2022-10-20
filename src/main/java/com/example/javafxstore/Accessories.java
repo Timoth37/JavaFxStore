@@ -3,8 +3,8 @@ package com.example.javafxstore;
 public class Accessories extends Product {
 
 
-    public Accessories(String name, double price, int nbItems){
-        super(name, price, nbItems);
+    public Accessories(String name, double sellingPrice,double purchasingPrice, int nbItems){
+        super(name, "Accessory", sellingPrice,purchasingPrice, nbItems);
     }
 
     @Override
@@ -12,13 +12,13 @@ public class Accessories extends Product {
         return "Accessories{" +
                 "number= " + this.getNumber() +
                 ", name= '" + this.getName() + '\'' +
-                ", price= " + this.getPrice() +
+                ", price= " + this.getSellingPrice() +
                 "€, nbItems= " + this.getNbItems() +
                 '}';
     }
 
     @Override
     public void applyDiscount() {
-        super.setPrice(Math.round(super.getPrice()*0.7*100.0)/100.0);
+        super.setSellingPrice(Math.round(super.getSellingPrice()*0.7*100.0)/100.0);
     }
 }

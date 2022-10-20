@@ -3,96 +3,136 @@ package com.example.javafxstore;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class StoreController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class StoreController implements Initializable{
+    @FXML
+    private Label welcomeText;
+    @FXML
+    private TextField txtName;
+    @FXML
+    private TextField txtPurchasingPrice;
+    @FXML
+    private TextField txtSellingPrice;
+    @FXML
+    private Button btnClose;
+    @FXML
+    private ComboBox cmbSizeAdd;
 
     @FXML
-    private Button closeButton;
+    private ComboBox cmbSizeModif;
 
     @FXML
-    private ListView listInv;
+    private ComboBox<String> cmbCategory;
+    @FXML
+    private ListView lvProduct;
 
     @FXML
-    private ComboBox<String> categorieInv;
+    private TextField txtNbItems;
 
-    @FXML
-    private ChoiceBox<String> categorieAchatVente;
+    DBManager manager;
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        manager = new DBManager();
+        List<String> cValues = new ArrayList<String>();
+        cValues.add("Clothes");
+        cValues.add("Shoes");
+        cValues.add("Accessories");
+        cmbCategory.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategory.setValue("Clothes");
+        List<Integer> sValues = new ArrayList<>();
+        for(int i =34; i<=54 ; i= i+2){sValues.add(i);}
+        cmbSizeAdd.setItems(FXCollections.observableArrayList(sValues));
+        cmbSizeAdd.setValue(34);
+        fetchProducts();
 
-    @FXML
-    private ChoiceBox<String> categorieDiscount;
-
-    @FXML
-    private ComboBox<String> categorieAdd;
-
-    @FXML
-    private ComboBox<String> tailleModif;
-
-    @FXML
-    private ComboBox<String> tailleListe;
-
-    //Menu Inventaire
-    @FXML
-    private void onOpenInv(){
-        categorieInv.setItems(FXCollections.observableArrayList("Vetements","Chaussures","Accesoires"));
-        categorieAdd.setItems(FXCollections.observableArrayList("Vetements","Chaussures","Accesoires"));
-        tailleListe.setItems(FXCollections.observableArrayList("34","36","38","40","42","44","46","48","50","52","54"));
+        lvProduct.getSelectionModel().selectedItemProperty().addListener(e->
+                displayProductDetails((Product) lvProduct.getSelectionModel().getSelectedItem()));
     }
 
-
-    @FXML
     private void onSelectCatInv(){
 
-        //Clear ListView
-
-        String selectedCat = categorieInv.getSelectionModel().getSelectedItem();
+        //String selectedCat = cmbCategory.getSelectionModel().getSelectedItem();
+        String selectedCat = (String) cmbCategory.getValue();
         //Récupère la catégorie sélectionnée
-        if(selectedCat=="Accesoires"){
-            tailleModif.setDisable(true);
+        if(selectedCat=="Accessories"){
+            cmbSizeModif.setDisable(true);
         }
         else {
-            tailleModif.setDisable(false);
+            cmbSizeModif.setDisable(false);
+        }
+
+        if(selectedCat=="Accessories"){
+            cmbSizeAdd.setDisable(true);
+        }
+        else {
+            cmbSizeAdd.setDisable(false);
         }
 
         //Reste à faire une requete SQL pour récupérer tous les éléments de la catégorie et les ajouter
     }
 
-    @FXML
-    private void onSelectCatAdd(){
-
-        //Clear ListView
-
-        String selectedCat = categorieAdd.getSelectionModel().getSelectedItem();
-        //Récupère la catégorie sélectionnée
-
-        //Retire l'option taille pour les accessoires
-        if(selectedCat=="Accesoires"){
-            tailleListe.setDisable(true);
-        }
-        else {
-            tailleListe.setDisable(false);
+    private void displayProductDetails(Product selectedProduct) {
+        if(selectedProduct!=null){
+            txtName.setText(selectedProduct.getName());
+            txtPurchasingPrice.setText(Double.toString(selectedProduct.getPurchasingPrice()));
+            txtSellingPrice.setText(Double.toString(selectedProduct.getSellingPrice()));
+            txtNbItems.setText(Integer.toString(selectedProduct.getNbItems()));
+            cmbCategory.setValue(selectedProduct.getCategory());
         }
     }
 
-
-    //Menu Achat Vente
-    @FXML
-    private void onOpenAchatVente(){
-        categorieAchatVente.setItems(FXCollections.observableArrayList("Vetements","Chaussures","Accesoires"));
+    public void onAddClick() {
+        if(((String)cmbCategory.getValue())=="Clothes"){
+            Product p= new Clothes(txtName.getText(),
+                    Double.parseDouble(txtSellingPrice.getText()),
+                    Double.parseDouble(txtPurchasingPrice.getText()),
+                    Integer.parseInt(txtNbItems.getText()),
+                    (Integer) cmbSizeAdd.getValue());
+            manager.addProduct(p,(Integer)cmbSizeAdd.getValue());
+        }
+        else if(cmbCategory.getValue()=="Shoes"){
+            Product s= new Shoes(txtName.getText(),
+                    Double.parseDouble(txtSellingPrice.getText()),
+                    Double.parseDouble(txtPurchasingPrice.getText()),
+                    Integer.parseInt(txtNbItems.getText()),
+                    (Integer) cmbSizeAdd.getValue());
+            manager.addProduct(s,(Integer)cmbSizeAdd.getValue());
+        } else{
+            Product a= new Accessories(txtName.getText(),
+                    Double.parseDouble(txtSellingPrice.getText()),
+                    Double.parseDouble(txtPurchasingPrice.getText()),
+                    Integer.parseInt(txtNbItems.getText()));
+            manager.addProduct(a,0);
+        }
+        fetchProducts();
     }
 
-    //Menu Discount
-    @FXML
-    private void onOpenDiscount(){
-        categorieDiscount.setItems(FXCollections.observableArrayList("Vetements","Chaussures","Accesoires"));
+    public void fetchProducts() {
+        List<Product> listProducts = manager.loadProduct();
+        if (listProducts != null) {
+            ObservableList<Product> products;
+            products= FXCollections.observableArrayList(listProducts);
+            lvProduct.setItems(products);
+        }
+    }
+
+    public void onCategoryAction(){
+
     }
 
     @FXML
     private void closeButtonAction(){
         // get a handle to the stage
-        Stage stage = (Stage) closeButton.getScene().getWindow();
+        Stage stage = (Stage) btnClose.getScene().getWindow();
         // do what you have to do
         stage.close();
     }
+
 }

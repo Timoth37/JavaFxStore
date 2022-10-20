@@ -4,9 +4,14 @@ public abstract class Product implements Discount{
     static int count =0;
     private int number;
     private String name;
-    private double price;
+    private double sellingPrice;
+    private double purchasingPrice;
     private int nbItems;
+
     static double income =0;
+    static double outcome =0;
+
+    private String category = "undefined";
 
     public static double getIncome() {
         return Math.round(income*100.0)/100.0;
@@ -25,6 +30,14 @@ public abstract class Product implements Discount{
 
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public int getNumber() {
         return number;
     }
@@ -41,19 +54,27 @@ public abstract class Product implements Discount{
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setPrice(double price) {
+    public void setSellingPrice(double price) {
         try {
             if(price<0){
                 throw new CustomizedException("Negative price");
             }
-            this.price=price;
+            this.sellingPrice=price;
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public double getPurchasingPrice() {
+        return purchasingPrice;
+    }
+
+    public void setPurchasingPrice(double purchasingPrice) {
+        this.purchasingPrice = purchasingPrice;
     }
 
     public int getNbItems() {
@@ -70,13 +91,22 @@ public abstract class Product implements Discount{
             System.out.println(e.getMessage());
         }
     }
-    public Product(String name, double price, int nbItems){
+    public Product(String name, String category,double sellingPrice, double purchasingPrice, int nbItems){
         this.name=name;
+        this.category= category;
         try {
-            if(price<0){
+            if(purchasingPrice<0){
                 throw new CustomizedException("Negative price");
             }
-            this.price=price;
+            this.purchasingPrice=purchasingPrice;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        try {
+            if(sellingPrice<0){
+                throw new CustomizedException("Negative price");
+            }
+            this.sellingPrice=sellingPrice;
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -94,12 +124,11 @@ public abstract class Product implements Discount{
 
     @Override
     public String toString() {
-        return "Product{" +
-                "number= " + number +
-                ", name= '" + name + '\'' +
-                ", price= " + price +
-                "€, nbItems= " + nbItems +
-                '}';
+        return number + " '" +
+                name + "' " +
+                sellingPrice + "€ "+
+                purchasingPrice+"€ "+
+                nbItems;
     }
 
     public void sell(int nbItems){
@@ -108,7 +137,7 @@ public abstract class Product implements Discount{
                 throw new CustomizedException("Product unavailable");
             }
             this.nbItems -= nbItems;
-            income += price*nbItems;
+            income += sellingPrice*nbItems;
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -116,6 +145,7 @@ public abstract class Product implements Discount{
 
     public void purchase(int nbItems){
         this.nbItems += nbItems;
+        outcome += purchasingPrice*nbItems;
     }
 
 }

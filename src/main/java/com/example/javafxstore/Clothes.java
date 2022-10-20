@@ -18,8 +18,8 @@ public class Clothes extends Product {
         }
     }
 
-    public Clothes(String name, double price, int nbItems, int size){
-        super(name, price, nbItems);
+    public Clothes(String name, double sellingPrice, double purchasingPrice, int nbItems, int size){
+        super(name, "Clothe", sellingPrice, purchasingPrice, nbItems);
         try {
             if(size>54 || size<34 || size%2!=0){
                 throw new CustomizedException("Wrong size");
@@ -30,19 +30,28 @@ public class Clothes extends Product {
         }
     }
 
+    public Clothes(int number, String name, double sellingPrice, double purchasingPrice, int nbItems, int size){
+        super(name, "Clothe", sellingPrice, purchasingPrice, nbItems);
+        try {
+            if(size>54 || size<34 || size%2!=0){
+                throw new CustomizedException("Wrong size");
+            }
+            this.size=size;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        this.setNumber(number);
+    }
+
     @Override
     public String toString() {
-        return "Clothes{" +
-                "number= " + this.getNumber() +
-                ", name= '" + this.getName() + '\'' +
-                ", price= " + this.getPrice() +
-                "€, nbItems= " + this.getNbItems() +
-                ", size= " + size +
-                '}';
+        return this.getNumber() + " '" +
+                this.getName() + "' " +
+                this.getNbItems();
     }
 
     @Override
     public void applyDiscount() {
-        super.setPrice(Math.round(super.getPrice()*0.7*100.0)/100.0);
+        super.setSellingPrice(Math.round(super.getSellingPrice()*0.7*100.0)/100.0);
     }
 }

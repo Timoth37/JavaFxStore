@@ -14,7 +14,7 @@ public class DBManager {
             String sql = "select * from product";
             ResultSet myRs= myStmt.executeQuery(sql);
             while (myRs.next()) {
-                Product s= new Product(myRs.getInt("id"),myRs.getString("name"), myRs.getString("price"));
+                Product s= new Clothes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"),myRs.getInt("nbItems"),38);
                 productAll.add(s);
             }
             this.close(myConn, myStmt, myRs);
@@ -36,7 +36,6 @@ public class DBManager {
             return null;
         }
     }
-
     private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
         try{
             if(myStmt!=null)
@@ -50,19 +49,37 @@ public class DBManager {
             System.out.println(e.getMessage());
         }
     }
-
-    public void addProduct(Product product){
+    public void addProduct(Product product, int size){
         Connection myConn=null;
         PreparedStatement myStmt = null;
         ResultSet myRs= null;
         try {
             myConn = this.Connector();
-            String sql = "INSERT INTO producttable (name,price) VALUES (?, ?)";
-            myStmt = myConn.prepareStatement(sql);
-            myStmt.setString(1, product.getName());
-            myStmt.setString(2, Double.toString(product.getPrice()));
+            String insertProduct = "INSERT INTO product (id,name,category,sellingPrice, purchasingPrice, nbItems) VALUES (?,?,?,?,?,?)";
+            myStmt = myConn.prepareStatement(insertProduct);
+            myStmt.setInt(1, product.getNumber());
+            myStmt.setString(2, product.getName());
+            myStmt.setString(3, product.getCategory());
+            myStmt.setDouble(4, product.getSellingPrice());
+            myStmt.setDouble(5, product.getPurchasingPrice());
+            myStmt.setInt(6, product.getNbItems());
             myStmt.execute();
-            System.out.println("test1");
+            myStmt.close();
+            if(product.getCategory()=="Clothe") {
+                String insertClothe = "INSERT INTO clothe (id, Csize) VALUES (?,?)";
+                myStmt = myConn.prepareStatement(insertClothe);
+                myStmt.setInt(1, product.getNumber());
+                myStmt.setInt(2, size);
+                myStmt.execute();
+                myStmt.close();
+            }else if(product.getCategory()=="Shoe"){
+                String insertShoe = "INSERT INTO shoe (id, Ssize) VALUES (?,?)";
+                myStmt = myConn.prepareStatement(insertShoe);
+                myStmt.setInt(1, product.getNumber());
+                myStmt.setInt(2, size);
+                myStmt.execute();
+                myStmt.close();
+            }
         }
         catch(Exception e){
             System.out.println(e.getMessage());
