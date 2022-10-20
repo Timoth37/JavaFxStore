@@ -12,16 +12,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxstore.StoreController">
    <children>
       <TabPane layoutX="-3.0" layoutY="-5.0" prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Inventaire">
+          <Tab onSelectionChanged="#onOpenInv" text="Inventaire">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="600.0">
                      <children>
-                        <ListView layoutX="31.0" layoutY="66.0" prefHeight="340.0" prefWidth="178.0" />
-                        <ChoiceBox fx:id="categorieList" layoutX="40.0" layoutY="34.0" prefHeight="26.0" prefWidth="154.0" />
+                        <ListView fx:id="listeInv" layoutX="31.0" layoutY="66.0" prefHeight="340.0" prefWidth="178.0" />
                         <Label layoutX="86.0" layoutY="13.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
                         <TabPane layoutX="245.0" layoutY="48.0" prefHeight="402.0" prefWidth="335.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
@@ -34,7 +33,7 @@
                                                 <Font size="17.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="ajoutCatList11" layoutX="93.0" layoutY="31.0" prefWidth="150.0" />
+                                          <ComboBox fx:id="categorieAdd" layoutX="93.0" layoutY="31.0" onAction="#onSelectCatAdd" prefWidth="150.0" />
                                           <Label layoutX="146.0" layoutY="67.0" prefHeight="17.0" prefWidth="43.0" text="Nom">
                                              <font>
                                                 <Font size="17.0" />
@@ -47,7 +46,7 @@
                                              </font>
                                           </Label>
                                           <TextField layoutX="89.0" layoutY="152.0" prefHeight="26.0" prefWidth="156.0" />
-                                          <ComboBox layoutX="95.0" layoutY="281.0" prefWidth="150.0" />
+                                          <ComboBox fx:id="tailleListe" layoutX="95.0" layoutY="281.0" prefWidth="150.0" />
                                           <Label layoutX="150.0" layoutY="251.0" text="Taille">
                                              <font>
                                                 <Font size="17.0" />
@@ -72,41 +71,35 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="346.0" prefWidth="335.0">
                                        <children>
-                                          <Label layoutX="133.0" layoutY="5.0" text="Categorie">
+                                          <Label layoutX="146.0" layoutY="37.0" prefHeight="17.0" prefWidth="43.0" text="Nom">
                                              <font>
                                                 <Font size="17.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox fx:id="ajoutCatList1" layoutX="93.0" layoutY="31.0" prefWidth="150.0" />
-                                          <Label layoutX="146.0" layoutY="67.0" prefHeight="17.0" prefWidth="43.0" text="Nom">
+                                          <TextField layoutX="88.0" layoutY="62.0" />
+                                          <Label layoutX="124.0" layoutY="96.0" text="Prix d'achat">
                                              <font>
                                                 <Font size="17.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="88.0" layoutY="92.0" />
-                                          <Label layoutX="124.0" layoutY="126.0" text="Prix d'achat">
+                                          <TextField layoutX="89.0" layoutY="122.0" prefHeight="26.0" prefWidth="156.0" />
+                                          <ComboBox fx:id="tailleModif" layoutX="95.0" layoutY="251.0" prefWidth="150.0" />
+                                          <Label layoutX="150.0" layoutY="221.0" text="Taille">
                                              <font>
                                                 <Font size="17.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="89.0" layoutY="152.0" prefHeight="26.0" prefWidth="156.0" />
-                                          <ComboBox layoutX="95.0" layoutY="281.0" prefWidth="150.0" />
-                                          <Label layoutX="150.0" layoutY="251.0" text="Taille">
-                                             <font>
-                                                <Font size="17.0" />
-                                             </font>
-                                          </Label>
-                                          <Button layoutX="132.0" layoutY="325.0" mnemonicParsing="false" text="Modifier">
+                                          <Button layoutX="132.0" layoutY="295.0" mnemonicParsing="false" text="Modifier">
                                              <font>
                                                 <Font size="17.0" />
                                              </font>
                                           </Button>
-                                          <Label layoutX="132.0" layoutY="184.0" text="Prix vente">
+                                          <Label layoutX="132.0" layoutY="154.0" text="Prix vente">
                                              <font>
                                                 <Font size="17.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="93.0" layoutY="213.0" />
+                                          <TextField layoutX="93.0" layoutY="183.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -127,16 +120,17 @@
                               </Tab>
                           </tabs>
                         </TabPane>
+                        <ComboBox fx:id="categorieInv" layoutX="45.0" layoutY="35.0" onAction="#onSelectCatInv" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Achat / Vente">
+            <Tab onSelectionChanged="#onOpenAchatVente" text="Achat / Vente">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ListView layoutX="31.0" layoutY="73.0" prefHeight="340.0" prefWidth="178.0" />
-                        <ChoiceBox fx:id="categorieList1" layoutX="43.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
+                        <ChoiceBox fx:id="categorieAchatVente" layoutX="43.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
                         <Label layoutX="85.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
                         <Label layoutX="333.0" layoutY="43.0" prefHeight="39.0" prefWidth="139.0" text="Quantité à acheter">
                            <font>
@@ -172,12 +166,12 @@
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Discount">
+            <Tab onSelectionChanged="#onOpenDiscount" text="Discount">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ListView layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="178.0" />
-                        <ChoiceBox fx:id="categorieList11" layoutX="44.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
+                        <ChoiceBox fx:id="categorieDiscount" layoutX="44.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
                         <Label layoutX="86.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
                         <Label layoutX="325.0" layoutY="136.0" text="Réduction actuelle">
                            <font>
@@ -220,6 +214,6 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Button layoutX="572.0" mnemonicParsing="false" text="X" textFill="#d72222" />
+      <Button fx:id="closeButton" layoutX="572.0" mnemonicParsing="false" onAction="#closeButtonAction" text="X" textFill="#d72222" />
    </children>
 </AnchorPane>
