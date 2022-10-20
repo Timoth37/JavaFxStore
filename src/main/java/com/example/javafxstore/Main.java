@@ -17,7 +17,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    //Salut
+    //Salut à toi
     public static void main(String[] args) {
         launch();
     }
