@@ -42,7 +42,7 @@
                                     <Font size="17.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnModify" layoutX="75.0" layoutY="272.0" mnemonicParsing="false" onAction="#onModifyClick" text="Modify">
+                              <Button fx:id="btnModify" layoutX="75.0" layoutY="272.0" mnemonicParsing="false" text="Modify">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -58,7 +58,7 @@
                                     <Font size="17.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnDelete" layoutX="163.0" layoutY="272.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Delete">
+                              <Button fx:id="btnDelete" layoutX="163.0" layoutY="272.0" mnemonicParsing="false" text="Delete">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -114,7 +114,8 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="270.0" />
+                        <ListView fx:id="lvDiscount" layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="178.0" />
+                        <ChoiceBox fx:id="cmbCategoryDiscount" layoutX="44.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
                         <Label layoutX="86.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
                         <Label layoutX="325.0" layoutY="136.0" text="Réduction actuelle">
                            <font>
@@ -135,7 +136,7 @@
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Economie">
+            <Tab onSelectionChanged="#onOpenEconomy" text="Economie">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -149,8 +150,14 @@
                               <Font size="25.0" />
                            </font>
                         </Label>
-                        <Text fx:id="txtIncome" layoutX="64.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true" />
-                        <Text fx:id="txtCost" layoutX="62.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true" />
+                        <Text fx:id="txtIncome" layoutX="64.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code">
+                           <font>
+                              <Font size="21.0" />
+                           </font></Text>
+                        <Text fx:id="txtCost" layoutX="62.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code">
+                           <font>
+                              <Font size="21.0" />
+                           </font></Text>
                      </children>
                   </AnchorPane>
               </content>

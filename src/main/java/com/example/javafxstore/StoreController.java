@@ -30,9 +30,21 @@ public class StoreController implements Initializable{
     @FXML
     private ListView lvProduct;
     @FXML
+    private ListView lvDiscount;
+
+    @FXML
+    private ComboBox cmbCategoryDiscount;
+
+    @FXML
     private TextField txtQuantityToChange;
     @FXML
     private Text txtIncome;
+    @FXML
+    private Text txtCost;
+
+    @FXML
+    private Text txtIncome;
+
     @FXML
     private Text txtCost;
 
@@ -173,9 +185,10 @@ public class StoreController implements Initializable{
 
     @FXML
     private void onOpenEconomy(){
-        List<Double> incomeCost = manager.loadIncomeCost();
-        //txtIncome.setText(incomeCost.get(0).toString()+" euros");
-        //txtCost.setText(incomeCost.get(1).toString()+" euros");
+        Double income = manager.loadIncome();
+        Double cost = manager.loadCost();
+        txtIncome.setText(income.toString()+" euros");
+        txtCost.setText(cost.toString()+" euros");
     }
 
 }
