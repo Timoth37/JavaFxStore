@@ -14,8 +14,6 @@ import java.util.ResourceBundle;
 
 public class StoreController implements Initializable{
     @FXML
-    private Label welcomeText;
-    @FXML
     private TextField txtName;
     @FXML
     private TextField txtPurchasingPrice;
@@ -24,11 +22,7 @@ public class StoreController implements Initializable{
     @FXML
     private Button btnClose;
     @FXML
-    private ComboBox cmbSizeAdd;
-
-    @FXML
-    private ComboBox cmbSizeModification;
-
+    private ComboBox cmbSize;
     @FXML
     private ComboBox<String> cmbCategory;
     @FXML
@@ -52,32 +46,27 @@ public class StoreController implements Initializable{
 
         lvProduct.getSelectionModel().selectedItemProperty().addListener(e->
                 displayProductDetails((Product) lvProduct.getSelectionModel().getSelectedItem()));
+
+        fetchProducts();
     }
 
     public void onCategoryAction(){
         String selectedCat = (String) cmbCategory.getValue();
         //Get the selected category
         if(selectedCat=="Accessories"){
-            cmbSizeModification.setDisable(true);
-            cmbSizeAdd.setDisable(true);
+            cmbSize.setDisable(true);
         } else if(selectedCat=="Shoes"){
-            cmbSizeModification.setDisable(false);
-            cmbSizeAdd.setDisable(false);
+            cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =36; i<=50 ; i++){sValues.add(i);}
-            cmbSizeAdd.setItems(FXCollections.observableArrayList(sValues));
-            cmbSizeAdd.setValue(36);
-            cmbSizeModification.setItems(FXCollections.observableArrayList(sValues));
-            cmbSizeModification.setValue(36);
+            cmbSize.setItems(FXCollections.observableArrayList(sValues));
+            cmbSize.setValue(36);
         } else{
-            cmbSizeModification.setDisable(false);
-            cmbSizeAdd.setDisable(false);
+            cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =34; i<=54 ; i+=2){sValues.add(i);}
-            cmbSizeAdd.setItems(FXCollections.observableArrayList(sValues));
-            cmbSizeAdd.setValue(34);
-            cmbSizeModification.setItems(FXCollections.observableArrayList(sValues));
-            cmbSizeModification.setValue(34);
+            cmbSize.setItems(FXCollections.observableArrayList(sValues));
+            cmbSize.setValue(34);
         }
     }
 
@@ -96,16 +85,16 @@ public class StoreController implements Initializable{
                     Double.parseDouble(txtSellingPrice.getText()),
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0,
-                    (Integer) cmbSizeAdd.getValue());
-            manager.addProduct(p,(Integer)cmbSizeAdd.getValue());
+                    (Integer) cmbSize.getValue());
+            manager.addProduct(p,(Integer)cmbSize.getValue());
         }
         else if(cmbCategory.getValue()=="Shoes"){
             Product s= new Shoes(txtName.getText(),
                     Double.parseDouble(txtSellingPrice.getText()),
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0,
-                    (Integer) cmbSizeAdd.getValue());
-            manager.addProduct(s,(Integer)cmbSizeAdd.getValue());
+                    (Integer) cmbSize.getValue());
+            manager.addProduct(s,(Integer)cmbSize.getValue());
         } else{
             Product a= new Accessories(txtName.getText(),
                     Double.parseDouble(txtSellingPrice.getText()),
