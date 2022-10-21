@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -24,12 +25,17 @@ public class StoreController implements Initializable{
     @FXML
     private ComboBox cmbSize;
     @FXML
-    private ComboBox<String> cmbCategory;
+    private ComboBox<String> cmbCategoryInv;
     @FXML
     private ListView lvProduct;
 
     @FXML
     private TextField txtQuantityToChange;
+
+    @FXML
+    private Text txtIncome;
+    @FXML
+    private Text txtCost;
 
     DBManager manager;
 
@@ -39,19 +45,16 @@ public class StoreController implements Initializable{
         cValues.add("Clothes");
         cValues.add("Shoes");
         cValues.add("Accessories");
-        cmbCategory.setItems(FXCollections.observableArrayList(cValues));
-        cmbCategory.setValue("Clothes");
+        cmbCategoryInv.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryInv.setValue("Clothes");
         onCategoryAction();
-
-
         lvProduct.getSelectionModel().selectedItemProperty().addListener(e->
                 displayProductDetails((Product) lvProduct.getSelectionModel().getSelectedItem()));
-
-        fetchProducts();
+        fetchProducts("clothe");
     }
 
     public void onCategoryAction(){
-        String selectedCat = (String) cmbCategory.getValue();
+        String selectedCat = (String) cmbCategoryInv.getValue();
         //Get the selected category
         if(selectedCat=="Accessories"){
             cmbSize.setDisable(true);
@@ -75,42 +78,46 @@ public class StoreController implements Initializable{
             txtName.setText(selectedProduct.getName());
             txtPurchasingPrice.setText(Double.toString(selectedProduct.getPurchasingPrice()));
             txtSellingPrice.setText(Double.toString(selectedProduct.getSellingPrice()));
-            cmbCategory.setValue(selectedProduct.getCategory());
+            cmbCategoryInv.setValue(selectedProduct.getCategory());
         }
     }
 
     public void onAddClick() {
-        if(((String)cmbCategory.getValue())=="Clothes"){
+        if(((String)cmbCategoryInv.getValue())=="Clothes"){
             Product p= new Clothes(txtName.getText(),
                     Double.parseDouble(txtSellingPrice.getText()),
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0,
                     (Integer) cmbSize.getValue());
             manager.addProduct(p,(Integer)cmbSize.getValue());
+            fetchProducts("clothe");
         }
-        else if(cmbCategory.getValue()=="Shoes"){
+        else if(cmbCategoryInv.getValue()=="Shoes"){
             Product s= new Shoes(txtName.getText(),
                     Double.parseDouble(txtSellingPrice.getText()),
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0,
                     (Integer) cmbSize.getValue());
             manager.addProduct(s,(Integer)cmbSize.getValue());
+            fetchProducts("shoe");
+
         } else{
             Product a= new Accessories(txtName.getText(),
                     Double.parseDouble(txtSellingPrice.getText()),
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0);
             manager.addProduct(a,0);
+            fetchProducts("accessory");
         }
-        fetchProducts();
     }
 
-    public void fetchProducts() {
-        List<Product> listProducts = manager.loadProduct();
+    public void fetchProducts(String category) {
+        List<Product> listProducts = manager.loadProduct(category);
         if (listProducts != null) {
             ObservableList<Product> products;
             products= FXCollections.observableArrayList(listProducts);
             lvProduct.setItems(products);
+
         }
     }
 
@@ -124,12 +131,27 @@ public class StoreController implements Initializable{
         Product soldProduct = (Product) lvProduct.getSelectionModel().getSelectedItem();
     }
 
+    public void onModifyClick(){
+
+    }
+
+    public void onDeleteClick(){
+
+    }
+
     @FXML
     private void closeButtonAction(){
         // get a handle to the stage
         Stage stage = (Stage) btnClose.getScene().getWindow();
         // do what you have to do
         stage.close();
+    }
+
+    @FXML
+    private void onOpenEconomy(){
+        List<Double> incomeCost = manager.loadIncomeCost();
+        //txtIncome.setText(incomeCost.get(0).toString()+" euros");
+        //txtCost.setText(incomeCost.get(1).toString()+" euros");
     }
 
 }

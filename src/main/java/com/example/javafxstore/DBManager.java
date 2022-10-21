@@ -6,12 +6,12 @@ import java.sql.*;
 
 public class DBManager {
 
-    public List<Product> loadProduct(){
+    public List<Product> loadProduct(String category){
         List<Product> productAll= new ArrayList<Product>();
-        Connection myConn= this.Connector();
         try {
+            Connection myConn= this.Connector();
             Statement myStmt= myConn.createStatement();
-            String sql = "select * from product";
+            String sql = "select * from product NATURAL JOIN clothe";
             ResultSet myRs= myStmt.executeQuery(sql);
             while (myRs.next()) {
                 Product s= new Clothes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"),myRs.getInt("nbItems"),38);
@@ -89,6 +89,35 @@ public class DBManager {
         }
     }
 
+    public List<Double> loadIncomeCost(){
+        List<Double> outcomeIncome= new ArrayList<Double>();
+        Connection myConn= this.Connector();
+        try {
+            Statement myStmt= myConn.createStatement();
+            String income = "select sum(gain) from actions where gain>0";
+            ResultSet myRs= myStmt.executeQuery(income);
+
+            outcomeIncome.add(myRs.getDouble("sum(gain)"));
+            this.close(myConn, myStmt, myRs);
+            return outcomeIncome;
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        try {
+            Statement myStmt= myConn.createStatement();
+            String outcome = "select sum(gain) from actions where gain<0";
+            ResultSet myRs= myStmt.executeQuery(outcome);
+
+            outcomeIncome.add(myRs.getDouble("sum(gain)"));
+            this.close(myConn, myStmt, myRs);
+            return outcomeIncome;
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void purchaseProduct(Product product){
         Connection myConn=null;
         PreparedStatement myStmt = null;

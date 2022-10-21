@@ -24,6 +24,14 @@ id int NOT NULL,
 Ssize int,
 FOREIGN KEY (id) REFERENCES product(id));
 
+DROP TABLE IF EXISTS accessory;
+CREATE TABLE accessory (
+id int NOT NULL,
+FOREIGN KEY (id) REFERENCES product(id));
+
+
+
+
 
 select * from product;
 select * from clothe;
