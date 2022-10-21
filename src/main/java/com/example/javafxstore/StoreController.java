@@ -41,9 +41,21 @@ public class StoreController implements Initializable{
     @FXML
     private ListView lvProductDiscount;
     @FXML
+    private ListView lvDiscount;
+
+    @FXML
+    private ComboBox cmbCategoryDiscount;
+
+    @FXML
     private TextField txtQuantityToChange;
     @FXML
     private Text txtIncome;
+    @FXML
+    private Text txtCost;
+
+    @FXML
+    private Text txtIncome;
+
     @FXML
     private Text txtCost;
 
