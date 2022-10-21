@@ -88,4 +88,26 @@ public class DBManager {
             close(myConn,myStmt,myRs);
         }
     }
+
+    public void purchaseProduct(Product product){
+        Connection myConn=null;
+        PreparedStatement myStmt = null;
+        ResultSet myRs= null;
+
+        try{
+            myConn = this.Connector();
+            String insertProduct = "UPDATE product SET nbItems= ? WHERE id = ? ";
+            myStmt = myConn.prepareStatement(insertProduct);
+            myStmt.setInt(1, product.getNbItems());
+            myStmt.setInt(2, product.getNumber());
+            myStmt.execute();
+            myStmt.close();
+        }catch(Exception e){
+
+        }
+    }
+
+    public void sellProduct(){
+
+    }
 }
