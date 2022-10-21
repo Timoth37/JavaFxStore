@@ -45,8 +45,8 @@ public class Clothes extends Product {
 
     @Override
     public String toString() {
-        return this.getNumber() + " '" +
-                this.getName() + "' " +
+        return this.getNumber() + " | " +
+                this.getName() + " | " +
                 this.getNbItems();
     }
 
