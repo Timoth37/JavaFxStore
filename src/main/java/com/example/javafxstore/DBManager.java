@@ -28,7 +28,7 @@ public class DBManager {
     public Connection Connector(){
         try {
             Connection connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store?serverTimezone=Europe%2FParis", "root","root");
+                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root","Samsam4321");
             return connection;
         }
         catch (Exception e) {
@@ -49,10 +49,10 @@ public class DBManager {
             System.out.println(e.getMessage());
         }
     }
-    public void addProduct(Product product, int size){
-        Connection myConn=null;
+    public void addProduct(Product product, int size) {
+        Connection myConn = null;
         PreparedStatement myStmt = null;
-        ResultSet myRs= null;
+        ResultSet myRs = null;
         try {
             myConn = this.Connector();
             String insertProduct = "INSERT INTO product (id,name,category,sellingPrice, purchasingPrice, nbItems) VALUES (?,?,?,?,?,?)";
@@ -65,14 +65,14 @@ public class DBManager {
             myStmt.setInt(6, product.getNbItems());
             myStmt.execute();
             myStmt.close();
-            if(product.getCategory()=="Clothe") {
+            if (product.getCategory() == "Clothe") {
                 String insertClothe = "INSERT INTO clothe (id, Csize) VALUES (?,?)";
                 myStmt = myConn.prepareStatement(insertClothe);
                 myStmt.setInt(1, product.getNumber());
                 myStmt.setInt(2, size);
                 myStmt.execute();
                 myStmt.close();
-            }else if(product.getCategory()=="Shoe"){
+            } else if (product.getCategory() == "Shoe") {
                 String insertShoe = "INSERT INTO shoe (id, Ssize) VALUES (?,?)";
                 myStmt = myConn.prepareStatement(insertShoe);
                 myStmt.setInt(1, product.getNumber());
@@ -80,14 +80,16 @@ public class DBManager {
                 myStmt.execute();
                 myStmt.close();
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-        finally{
-            close(myConn,myStmt,myRs);
+        } finally {
+            close(myConn, myStmt, myRs);
         }
     }
+
+
+
+
 
     public void purchaseProduct(Product product){
         Connection myConn=null;
@@ -109,5 +111,44 @@ public class DBManager {
 
     public void sellProduct(){
 
+    }
+
+    public Double loadIncome(){
+        Double incomeValue= 0.0;
+        Connection myConn= this.Connector();
+        try {
+            Statement myStmt= myConn.createStatement();
+            String income = "select sum(gain) from actions where gain>0;";
+            ResultSet myRs= myStmt.executeQuery(income);
+            while (myRs.next()) {
+                incomeValue= myRs.getDouble("sum(gain)");
+            }
+
+            this.close(myConn, myStmt, myRs);
+            return incomeValue;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Double loadCost(){
+        Double costValue= 0.0;
+        Connection myConn= this.Connector();
+        try {
+            Statement myStmt= myConn.createStatement();
+            String income = "select sum(gain) from actions where not gain>0;";
+            ResultSet myRs= myStmt.executeQuery(income);
+            while (myRs.next()) {
+                costValue= myRs.getDouble("sum(gain)");
+            }
+            costValue *= -1;
+
+            this.close(myConn, myStmt, myRs);
+            return costValue;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

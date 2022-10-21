@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -29,7 +30,19 @@ public class StoreController implements Initializable{
     private ListView lvProduct;
 
     @FXML
+    private ListView lvDiscount;
+
+    @FXML
+    private ComboBox cmbCategoryDiscount;
+
+    @FXML
     private TextField txtQuantityToChange;
+
+    @FXML
+    private Text txtIncome;
+
+    @FXML
+    private Text txtCost;
 
     DBManager manager;
 
@@ -130,6 +143,16 @@ public class StoreController implements Initializable{
         Stage stage = (Stage) btnClose.getScene().getWindow();
         // do what you have to do
         stage.close();
+    }
+
+    @FXML
+    private void onOpenEconomy(){
+        Double income = manager.loadIncome();
+        Double cost = manager.loadCost();
+        txtIncome.setText(income.toString()+" euros");
+        txtCost.setText(cost.toString()+" euros");
+
+
     }
 
 }
