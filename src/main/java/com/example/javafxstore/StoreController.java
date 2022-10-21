@@ -1,5 +1,6 @@
 package com.example.javafxstore;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,8 +28,18 @@ public class StoreController implements Initializable{
     private ComboBox cmbSize;
     @FXML
     private ComboBox<String> cmbCategoryInv;
+
     @FXML
-    private ListView lvProduct;
+    private ComboBox<String> cmbCategoryPS;
+
+    @FXML
+    private ComboBox<String> cmbCategoryDiscount;
+    @FXML
+    private ListView lvProductInv;
+    @FXML
+    private ListView lvProductPS;
+    @FXML
+    private ListView lvProductDiscount;
     @FXML
     private TextField txtQuantityToChange;
     @FXML
@@ -40,38 +51,47 @@ public class StoreController implements Initializable{
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         manager = new DBManager();
-        List<String> cValues = new ArrayList<String>();
-        cValues.add("Clothes");
-        cValues.add("Shoes");
-        cValues.add("Accessories");
-        cmbCategoryInv.setItems(FXCollections.observableArrayList(cValues));
-        cmbCategoryInv.setValue("Clothes");
+        onOpenInventory();
         onCategoryAction();
-        lvProduct.getSelectionModel().selectedItemProperty().addListener(e->
-                displayProductDetails((Product) lvProduct.getSelectionModel().getSelectedItem(),40));
-        fetchProducts("clothe");
+
+        lvProductInv.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            try{
+                if (cmbCategoryInv.getValue() == "Clothes") {
+                    Clothes clothe = (Clothes) newVal;
+                    displayProductDetails(clothe, clothe.getSize());
+                } else if (cmbCategoryInv.getValue() == "Accessories") {
+                    Accessories accessory = (Accessories) newVal;
+                    displayProductDetails(accessory, 0);
+                } else if (cmbCategoryInv.getValue() == "Shoes") {
+                    Shoes shoe = (Shoes) newVal;
+                    displayProductDetails(shoe, shoe.getShoeSize());
+                }
+            }catch(Exception e){
+
+            }
+        });
+        fetchProducts("Clothe", lvProductInv);
     }
 
     public void onCategoryAction(){
         String selectedCat = (String) cmbCategoryInv.getValue();
-        //Get the selected category
         if(selectedCat=="Accessories"){
             cmbSize.setDisable(true);
-            fetchProducts("accessory");
+            fetchProducts("Accessory", lvProductInv);
         } else if(selectedCat=="Shoes"){
             cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =36; i<=50 ; i++){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(36);
-            fetchProducts("shoe");
+            fetchProducts("Shoe", lvProductInv);
         } else{
             cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =34; i<=54 ; i+=2){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(34);
-            fetchProducts("clothe");
+            fetchProducts("Clothe", lvProductInv);
         }
     }
 
@@ -94,7 +114,7 @@ public class StoreController implements Initializable{
                     0,
                     (Integer) cmbSize.getValue());
             manager.addProduct(p,(Integer)cmbSize.getValue());
-            fetchProducts("clothe");
+            fetchProducts("Clothe", lvProductInv);
         }
         else if(cmbCategoryInv.getValue()=="Shoes"){
             Product s= new Shoes(txtName.getText(),
@@ -103,7 +123,7 @@ public class StoreController implements Initializable{
                     0,
                     (Integer) cmbSize.getValue());
             manager.addProduct(s,(Integer)cmbSize.getValue());
-            fetchProducts("shoe");
+            fetchProducts("Shoe", lvProductInv);
 
         } else{
             Product a= new Accessories(txtName.getText(),
@@ -111,37 +131,42 @@ public class StoreController implements Initializable{
                     Double.parseDouble(txtPurchasingPrice.getText()),
                     0);
             manager.addProduct(a,0);
-            fetchProducts("accessory");
+            fetchProducts("Accessory", lvProductInv);
         }
     }
 
     public void onModifyClick(){
-        if(cmbCategoryInv.getValue()=="Clothes"){
-            Clothes clothe = (Clothes) lvProduct.getSelectionModel().getSelectedItem();
-            displayProductDetails(clothe, clothe.getSize());
-            Clothes newClothe = new Clothes(clothe.getNumber(),txtName.getText(),Double.parseDouble(txtPurchasingPrice.getText()),Double.parseDouble(txtSellingPrice.getText()),clothe.getNbItems(), (Integer) cmbSize.getValue());
-            manager.modifyProduct(clothe, clothe.getSize());
-            fetchProducts("clothe");
+        try {
+            if (cmbCategoryInv.getValue() == "Clothes") {
+                Clothes clothe = (Clothes) lvProductInv.getSelectionModel().getSelectedItem();
+                Clothes newClothe = new Clothes(clothe.getNumber(), txtName.getText(), Double.parseDouble(txtSellingPrice.getText()), Double.parseDouble(txtPurchasingPrice.getText()), clothe.getNbItems(), (Integer) cmbSize.getValue());
+                manager.modifyProduct(newClothe, newClothe.getSize());
+                fetchProducts("Clothe", lvProductInv);
 
-        }else if(cmbCategoryInv.getValue()=="Shoes"){
-            Shoes shoe = (Shoes) lvProduct.getSelectionModel().getSelectedItem();
-            displayProductDetails(shoe, shoe.getShoeSize());
-            manager.modifyProduct(shoe, shoe.getShoeSize());
-            fetchProducts("shoe");
+            } else if (cmbCategoryInv.getValue() == "Shoes") {
+                Shoes shoe = (Shoes) lvProductInv.getSelectionModel().getSelectedItem();
+                Shoes newShoe = new Shoes(shoe.getNumber(), txtName.getText(), Double.parseDouble(txtSellingPrice.getText()), Double.parseDouble(txtPurchasingPrice.getText()), shoe.getNbItems(), (Integer) cmbSize.getValue());
+                manager.modifyProduct(newShoe, newShoe.getShoeSize());
+                fetchProducts("Shoe", lvProductInv);
 
-        } else{
-            Accessories accessory = (Accessories) lvProduct.getSelectionModel().getSelectedItem();
-            displayProductDetails(accessory, 0);
-            manager.modifyProduct(accessory, 0);
-            fetchProducts("accessory");
+            } else {
+                Accessories accessory = (Accessories) lvProductInv.getSelectionModel().getSelectedItem();
+                Accessories newAccessory = new Accessories(accessory.getNumber(), txtName.getText(), Double.parseDouble(txtSellingPrice.getText()), Double.parseDouble(txtPurchasingPrice.getText()), accessory.getNbItems());
+                manager.modifyProduct(newAccessory, 0);
+                fetchProducts("Accessory", lvProductInv);
+            }
+        }catch(Exception e){
+
         }
     }
 
     public void onDeleteClick(){
-
+        Product product = (Product) lvProductInv.getSelectionModel().getSelectedItem();
+        manager.deleteProduct(product);
+        fetchProducts(product.getCategory(), lvProductInv);
     }
 
-    public void fetchProducts(String category) {
+    public void fetchProducts(String category, ListView lvProduct) {
         List<Product> listProducts = manager.loadProduct(category);
         if (listProducts != null) {
             ObservableList<Product> products;
@@ -152,30 +177,65 @@ public class StoreController implements Initializable{
     }
 
     public void onPurchaseAction(){
-        Product purchasedProduct = (Product) lvProduct.getSelectionModel().getSelectedItem();
-        purchasedProduct.setNbItems(purchasedProduct.getNbItems()+Integer.parseInt(txtQuantityToChange.getText()));
-        manager.purchaseProduct(purchasedProduct);
+        Product purchasedProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
+        manager.operationProduct(purchasedProduct, Integer.parseInt(txtQuantityToChange.getText()));
+        fetchProducts(purchasedProduct.getCategory(), lvProductPS);
+        System.out.println(purchasedProduct.getCategory());
     }
 
     public void onSellAction(){
-        Product soldProduct = (Product) lvProduct.getSelectionModel().getSelectedItem();
+        Product soldProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
+        manager.operationProduct(soldProduct,-Integer.parseInt(txtQuantityToChange.getText()));
+        fetchProducts(soldProduct.getCategory(), lvProductPS);
+        System.out.println(soldProduct.getCategory());
     }
 
 
 
     @FXML
     private void closeButtonAction(){
-        // get a handle to the stage
         Stage stage = (Stage) btnClose.getScene().getWindow();
-        // do what you have to do
         stage.close();
     }
 
     @FXML
-    private void onOpenEconomy(){
-        List<Double> incomeCost = manager.loadIncomeCost();
-        //txtIncome.setText(incomeCost.get(0).toString()+" euros");
-        //txtCost.setText(incomeCost.get(1).toString()+" euros");
+    private void onOpenInventory(){
+        List<String> cValues = new ArrayList<String>();
+        cValues.add("Clothes");
+        cValues.add("Shoes");
+        cValues.add("Accessories");
+        cmbCategoryInv.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryInv.setValue("Clothes");
     }
+    @FXML
+    private void onOpenPS(){
+        List<String> cValues = new ArrayList<String>();
+        cValues.add("Clothes");
+        cValues.add("Shoes");
+        cValues.add("Accessories");
+        cmbCategoryPS.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryPS.setValue("Clothes");
+        fetchProducts("Clothe",lvProductPS);
+    }
+    @FXML
+    private void onOpenDiscount(){
+        List<String> cValues = new ArrayList<String>();
+        cValues.add("Clothes");
+        cValues.add("Shoes");
+        cValues.add("Accessories");
+        cmbCategoryDiscount.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryDiscount.setValue("Clothes");
+        fetchProducts("Clothe",lvProductDiscount);
+
+    }
+    @FXML
+    private void onOpenEconomy(){
+        Double income = manager.loadIncome();
+        Double cost = manager.loadCost();
+        txtIncome.setText(income.toString()+" euros");
+        txtCost.setText(cost.toString()+" euros");
+    }
+
+
 
 }

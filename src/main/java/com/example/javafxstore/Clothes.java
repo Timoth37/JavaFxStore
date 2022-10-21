@@ -47,7 +47,8 @@ public class Clothes extends Product {
     public String toString() {
         return this.getNumber() + " | " +
                 this.getName() + " | " +
-                this.getNbItems();
+                this.getNbItems()+" | "+
+                this.getCategory();
     }
 
     @Override

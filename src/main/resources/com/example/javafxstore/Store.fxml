@@ -15,11 +15,11 @@
    <children>
       <TabPane layoutX="-3.0" layoutY="-5.0" prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Inventaire">
+          <Tab onSelectionChanged="#onOpenInventory" text="Inventory">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="600.0">
                      <children>
-                        <ListView fx:id="lvProduct" layoutX="31.0" layoutY="66.0" prefHeight="340.0" prefWidth="274.0" />
+                        <ListView fx:id="lvProductInv" layoutX="31.0" layoutY="66.0" prefHeight="340.0" prefWidth="274.0" />
                         <ComboBox fx:id="cmbCategoryInv" layoutX="91.0" layoutY="34.0" onAction="#onCategoryAction" prefHeight="26.0" prefWidth="154.0" />
                         <Label layoutX="133.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Category" textAlignment="CENTER" />
                         <AnchorPane layoutX="326.0" layoutY="66.0" prefHeight="337.0" prefWidth="241.0">
@@ -69,12 +69,12 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Achat / Vente">
+            <Tab onSelectionChanged="#onOpenPS" text="Purchase/Sell">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="31.0" layoutY="73.0" prefHeight="340.0" prefWidth="265.0" />
-                        <Label layoutX="129.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Category" />
+                        <ListView fx:id="lvProductPS" layoutX="31.0" layoutY="73.0" prefHeight="340.0" prefWidth="265.0" />
+                        <Label layoutX="136.0" layoutY="24.0" prefHeight="17.0" prefWidth="69.0" text="Category" />
                         <Label layoutX="325.0" layoutY="42.0" prefHeight="39.0" prefWidth="227.0" text="Quantity to purchase or sell" wrapText="true">
                            <font>
                               <Font size="17.0" />
@@ -106,16 +106,16 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <ComboBox fx:id="cmbCategoryPS" layoutX="89.0" layoutY="42.0" prefWidth="150.0" />
+                        <ComboBox fx:id="cmbCategoryPS" layoutX="89.0" layoutY="42.0" onAction="#onCategoryAction" prefWidth="150.0" />
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Discount">
+            <Tab onSelectionChanged="#onOpenDiscount" text="Discount">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="270.0" />
-                        <Label layoutX="86.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
+                        <ListView fx:id="lvProductDiscount" layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="270.0" />
+                        <Label layoutX="104.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
                         <Label layoutX="325.0" layoutY="136.0" text="Réduction actuelle">
                            <font>
                               <Font size="17.0" />
@@ -132,10 +132,11 @@
                               <Font size="19.0" />
                            </font>
                         </Button>
+                        <ComboBox fx:id="cmbCategoryDiscount" layoutX="92.0" layoutY="38.0" prefWidth="150.0" />
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Economie">
+            <Tab onSelectionChanged="#onOpenEconomy" text="Economy">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

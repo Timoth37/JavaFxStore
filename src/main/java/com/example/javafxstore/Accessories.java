@@ -13,12 +13,10 @@ public class Accessories extends Product {
 
     @Override
     public String toString() {
-        return "Accessories{" +
-                "number= " + this.getNumber() +
-                ", name= '" + this.getName() + '\'' +
-                ", price= " + this.getSellingPrice() +
-                "€, nbItems= " + this.getNbItems() +
-                '}';
+        return this.getNumber() + " | " +
+                this.getName() + " | " +
+                this.getNbItems()+" | "+
+                this.getCategory();
     }
 
     @Override

@@ -11,7 +11,7 @@ public abstract class Product implements Discount{
     static double income =0;
     static double outcome =0;
 
-    private String category = "undefined";
+    private String category;
 
     public static double getIncome() {
         return Math.round(income*100.0)/100.0;
