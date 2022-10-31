@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import java.util.concurrent.TimeUnit;
 import java.net.URL;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ public class StoreController implements Initializable{
 
     @FXML
     private ComboBox<String> cmbCategoryPS;
-
     @FXML
     private ComboBox<String> cmbCategoryDiscount;
     @FXML
@@ -40,7 +39,8 @@ public class StoreController implements Initializable{
     private ListView lvProductPS;
     @FXML
     private ListView lvProductDiscount;
-
+    @FXML
+    private TabPane tabMenu;
     @FXML
     private TextField txtQuantityToChange;
     @FXML
@@ -50,11 +50,19 @@ public class StoreController implements Initializable{
 
     DBManager manager;
 
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
         manager = new DBManager();
-        onOpenInventory();
-        onCategoryAction();
-
+        List<String> cValues = new ArrayList<String>();
+        cValues.add("Clothes");
+        cValues.add("Shoes");
+        cValues.add("Accessories");
+        cmbCategoryInv.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryDiscount.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryPS.setItems(FXCollections.observableArrayList(cValues));
+        cmbCategoryInv.setValue("Clothes");
+        cmbCategoryDiscount.setValue("Clothes");
+        cmbCategoryPS.setValue("Clothes");
         lvProductInv.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             try{
                 if (cmbCategoryInv.getValue() == "Clothes") {
@@ -71,28 +79,38 @@ public class StoreController implements Initializable{
 
             }
         });
-        fetchProducts("Clothe", lvProductInv);
+        onCategoryActionInv();
+        onCategoryActionDiscount();
+        onCategoryActionPS();
     }
 
-    public void onCategoryAction(){
-        String selectedCat = (String) cmbCategoryInv.getValue();
+    public void onCategoryActionInv(){
+        categoryChoice((String) cmbCategoryInv.getValue(), lvProductInv);
+    }
+    public void onCategoryActionPS(){
+        categoryChoice((String) cmbCategoryPS.getValue(), lvProductPS);
+    }
+    public void onCategoryActionDiscount(){
+        categoryChoice((String) cmbCategoryDiscount.getValue(), lvProductDiscount);
+    }
+    public void categoryChoice(String selectedCat, ListView listView){
         if(selectedCat=="Accessories"){
             cmbSize.setDisable(true);
-            fetchProducts("Accessory", lvProductInv);
+            fetchProducts("Accessory", listView);
         } else if(selectedCat=="Shoes"){
             cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =36; i<=50 ; i++){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(36);
-            fetchProducts("Shoe", lvProductInv);
+            fetchProducts("Shoe", listView);
         } else{
             cmbSize.setDisable(false);
             List<Integer> sValues = new ArrayList<>();
             for(int i =34; i<=54 ; i+=2){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(34);
-            fetchProducts("Clothe", lvProductInv);
+            fetchProducts("Clothe", listView);
         }
     }
 
@@ -168,7 +186,7 @@ public class StoreController implements Initializable{
     }
 
     public void fetchProducts(String category, ListView lvProduct) {
-        List<Product> listProducts = manager.loadProduct(category);
+        List<Product> listProducts = this.manager.loadProduct(category);
         if (listProducts != null) {
             ObservableList<Product> products;
             products= FXCollections.observableArrayList(listProducts);
@@ -179,14 +197,14 @@ public class StoreController implements Initializable{
 
     public void onPurchaseAction(){
         Product purchasedProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
-        manager.operationProduct(purchasedProduct, Integer.parseInt(txtQuantityToChange.getText()));
+        manager.operationProduct(purchasedProduct, Double.parseDouble(txtQuantityToChange.getText()));
         fetchProducts(purchasedProduct.getCategory(), lvProductPS);
         System.out.println(purchasedProduct.getCategory());
     }
 
     public void onSellAction(){
         Product soldProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
-        manager.operationProduct(soldProduct,-Integer.parseInt(txtQuantityToChange.getText()));
+        manager.operationProduct(soldProduct,-Double.parseDouble(txtQuantityToChange.getText()));
         fetchProducts(soldProduct.getCategory(), lvProductPS);
         System.out.println(soldProduct.getCategory());
     }
@@ -201,30 +219,16 @@ public class StoreController implements Initializable{
 
     @FXML
     private void onOpenInventory(){
-        List<String> cValues = new ArrayList<String>();
-        cValues.add("Clothes");
-        cValues.add("Shoes");
-        cValues.add("Accessories");
-        cmbCategoryInv.setItems(FXCollections.observableArrayList(cValues));
         cmbCategoryInv.setValue("Clothes");
+        fetchProducts("Clothe", lvProductInv);
     }
     @FXML
     private void onOpenPS(){
-        List<String> cValues = new ArrayList<String>();
-        cValues.add("Clothes");
-        cValues.add("Shoes");
-        cValues.add("Accessories");
-        cmbCategoryPS.setItems(FXCollections.observableArrayList(cValues));
         cmbCategoryPS.setValue("Clothes");
         fetchProducts("Clothe",lvProductPS);
     }
     @FXML
     private void onOpenDiscount(){
-        List<String> cValues = new ArrayList<String>();
-        cValues.add("Clothes");
-        cValues.add("Shoes");
-        cValues.add("Accessories");
-        cmbCategoryDiscount.setItems(FXCollections.observableArrayList(cValues));
         cmbCategoryDiscount.setValue("Clothes");
         fetchProducts("Clothe",lvProductDiscount);
 

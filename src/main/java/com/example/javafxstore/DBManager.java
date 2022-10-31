@@ -154,7 +154,7 @@ public class DBManager {
         }
     }
     public Double loadIncome(){
-        Double incomeValue= 0.0;
+        Double incomeValue= 0.000;
         Connection myConn= this.Connector();
         try {
             Statement myStmt= myConn.createStatement();
@@ -190,7 +190,7 @@ public class DBManager {
         }
         return null;
     }
-    public void operationProduct(Product product, int diffItem){
+    public void operationProduct(Product product, double diffItem){
         Connection myConn=null;
         Statement myStmt = null;
         try{
