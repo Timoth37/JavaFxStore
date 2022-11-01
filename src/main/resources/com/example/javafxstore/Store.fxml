@@ -172,6 +172,5 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="btnClose" layoutX="572.0" mnemonicParsing="false" onAction="#closeButtonAction" text="X" textFill="#d72222" />
    </children>
 </AnchorPane>

@@ -14,6 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.control.Alert.AlertType;
+
 
 public class StoreController implements Initializable{
     @FXML
@@ -50,6 +52,17 @@ public class StoreController implements Initializable{
 
     DBManager manager;
 
+    public class CustomizedException extends Exception {
+        String message ;
+        public CustomizedException(String message) {
+            this.message=message;
+        }
+        @Override
+        public String getMessage(){
+            return this.message;
+        }
+
+    }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         manager = new DBManager();
@@ -83,7 +96,6 @@ public class StoreController implements Initializable{
         onCategoryActionDiscount();
         onCategoryActionPS();
     }
-
     public void onCategoryActionInv(){
         categoryChoice((String) cmbCategoryInv.getValue(), lvProductInv);
     }
@@ -113,7 +125,6 @@ public class StoreController implements Initializable{
             fetchProducts("Clothe", listView);
         }
     }
-
     private void displayProductDetails(Product selectedProduct, int size) {
         if(selectedProduct!=null){
             txtName.setText(selectedProduct.getName());
@@ -124,36 +135,44 @@ public class StoreController implements Initializable{
             }
         }
     }
-
     public void onAddClick() {
-        if(((String)cmbCategoryInv.getValue())=="Clothes"){
-            Product p= new Clothes(txtName.getText(),
-                    Double.parseDouble(txtSellingPrice.getText()),
-                    Double.parseDouble(txtPurchasingPrice.getText()),
-                    0,
-                    (Integer) cmbSize.getValue());
-            manager.addProduct(p,(Integer)cmbSize.getValue());
-            fetchProducts("Clothe", lvProductInv);
-        }
-        else if(cmbCategoryInv.getValue()=="Shoes"){
-            Product s= new Shoes(txtName.getText(),
-                    Double.parseDouble(txtSellingPrice.getText()),
-                    Double.parseDouble(txtPurchasingPrice.getText()),
-                    0,
-                    (Integer) cmbSize.getValue());
-            manager.addProduct(s,(Integer)cmbSize.getValue());
-            fetchProducts("Shoe", lvProductInv);
 
-        } else{
-            Product a= new Accessories(txtName.getText(),
-                    Double.parseDouble(txtSellingPrice.getText()),
-                    Double.parseDouble(txtPurchasingPrice.getText()),
-                    0);
-            manager.addProduct(a,0);
-            fetchProducts("Accessory", lvProductInv);
+        try{
+            if(((String)cmbCategoryInv.getValue())=="Clothes"){
+                Product p= new Clothes(txtName.getText(),
+                        Double.parseDouble(txtSellingPrice.getText()),
+                        Double.parseDouble(txtPurchasingPrice.getText()),
+                        0,
+                        (Integer) cmbSize.getValue());
+                manager.addProduct(p,(Integer)cmbSize.getValue());
+                fetchProducts("Clothe", lvProductInv);
+            }
+            else if(cmbCategoryInv.getValue()=="Shoes"){
+                Product s= new Shoes(txtName.getText(),
+                        Double.parseDouble(txtSellingPrice.getText()),
+                        Double.parseDouble(txtPurchasingPrice.getText()),
+                        0,
+                        (Integer) cmbSize.getValue());
+                manager.addProduct(s,(Integer)cmbSize.getValue());
+                fetchProducts("Shoe", lvProductInv);
+
+            } else{
+                Product a= new Accessories(txtName.getText(),
+                        Double.parseDouble(txtSellingPrice.getText()),
+                        Double.parseDouble(txtPurchasingPrice.getText()),
+                        0);
+                manager.addProduct(a,0);
+                fetchProducts("Accessory", lvProductInv);
+            }
+        }catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("Please, check that all text fields are completed");
+            alert.showAndWait();
         }
+
     }
-
     public void onModifyClick(){
         try {
             if (cmbCategoryInv.getValue() == "Clothes") {
@@ -175,14 +194,28 @@ public class StoreController implements Initializable{
                 fetchProducts("Accessory", lvProductInv);
             }
         }catch(Exception e){
-
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You must select an item to modify");
+            alert.showAndWait();
         }
     }
 
     public void onDeleteClick(){
         Product product = (Product) lvProductInv.getSelectionModel().getSelectedItem();
-        manager.deleteProduct(product);
-        fetchProducts(product.getCategory(), lvProductInv);
+        try{
+            if(product==null){ throw new CustomizedException("You must select an item");}
+            manager.deleteProduct(product);
+            fetchProducts(product.getCategory(), lvProductInv);
+        }catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You must select an item to delete");
+            alert.showAndWait();
+        }
+
     }
 
     public void fetchProducts(String category, ListView lvProduct) {
@@ -196,25 +229,34 @@ public class StoreController implements Initializable{
     }
 
     public void onPurchaseAction(){
-        Product purchasedProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
-        manager.operationProduct(purchasedProduct, Double.parseDouble(txtQuantityToChange.getText()));
-        fetchProducts(purchasedProduct.getCategory(), lvProductPS);
-        System.out.println(purchasedProduct.getCategory());
+        try{
+            Product purchasedProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
+            manager.operationProduct(purchasedProduct, Double.parseDouble(txtQuantityToChange.getText()));
+            fetchProducts(purchasedProduct.getCategory(), lvProductPS);
+            System.out.println(purchasedProduct.getCategory());
+        }catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You must select an item to purchase");
+            alert.showAndWait();
+        }
+
     }
 
     public void onSellAction(){
-        Product soldProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
-        manager.operationProduct(soldProduct,-Double.parseDouble(txtQuantityToChange.getText()));
-        fetchProducts(soldProduct.getCategory(), lvProductPS);
-        System.out.println(soldProduct.getCategory());
-    }
-
-
-
-    @FXML
-    private void closeButtonAction(){
-        Stage stage = (Stage) btnClose.getScene().getWindow();
-        stage.close();
+        try{
+            Product soldProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
+            manager.operationProduct(soldProduct,-Double.parseDouble(txtQuantityToChange.getText()));
+            fetchProducts(soldProduct.getCategory(), lvProductPS);
+            System.out.println(soldProduct.getCategory());
+        }catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You must select an item to sell");
+            alert.showAndWait();
+        }
     }
 
     @FXML
