@@ -11,54 +11,57 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxstore.StoreController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="598.0" style="-fx-background-color: #8792A1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxstore.StoreController">
    <children>
-      <TabPane layoutX="-3.0" layoutY="-5.0" prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabMenu" layoutX="-3.0" layoutY="-5.0" prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Inventaire">
+          <Tab onSelectionChanged="#onOpenInventory" text="Inventory">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="600.0">
                      <children>
-                        <ListView fx:id="lvProduct" layoutX="31.0" layoutY="66.0" prefHeight="340.0" prefWidth="274.0" />
-                        <ComboBox fx:id="cmbCategoryInv" layoutX="91.0" layoutY="34.0" onAction="#onCategoryAction" prefHeight="26.0" prefWidth="154.0" />
-                        <Label layoutX="133.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Category" textAlignment="CENTER" />
-                        <AnchorPane layoutX="326.0" layoutY="66.0" prefHeight="337.0" prefWidth="241.0">
+                        <ListView fx:id="lvProductInv" layoutX="30.0" layoutY="80.0" prefHeight="340.0" prefWidth="275.0" style="-fx-pref-width: 280; -fx-pref-height: 350; -fx-background-color: #d2dce5;" />
+                        <ComboBox fx:id="cmbCategoryInv" layoutX="95.0" layoutY="40.0" onAction="#onCategoryActionInv" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: #D9E8FC; -fx-pref-height: 30; -fx-pref-width: 150;" />
+                        <Label alignment="CENTER" layoutX="120.0" layoutY="12.0" prefHeight="20.0" prefWidth="100.0" style="-fx-font-weight: bold;" text="CATEGORY" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <AnchorPane layoutX="330.0" layoutY="80.0" prefHeight="340.0" prefWidth="250.0">
                            <children>
-                              <Label layoutX="90.0" layoutY="14.0" prefHeight="26.0" prefWidth="61.0" text="Name">
+                              <Label alignment="CENTER" layoutX="50.0" layoutY="15.0" prefHeight="20.0" prefWidth="150.0" text="Name" textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtName" layoutX="42.0" layoutY="39.0" />
-                              <Label layoutX="62.0" layoutY="72.0" text="Purchasing Price">
+                              <TextField fx:id="txtName" layoutX="50.0" layoutY="40.0" prefHeight="20.0" prefWidth="150.0" />
+                              <Label alignment="CENTER" layoutX="50.0" layoutY="85.0" prefHeight="20.0" prefWidth="150.0" text="Purchasing Price" textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtPurchasingPrice" layoutX="43.0" layoutY="99.0" prefHeight="26.0" prefWidth="156.0" />
-                              <ComboBox fx:id="cmbSize" layoutX="49.0" layoutY="228.0" prefWidth="150.0" />
-                              <Label layoutX="104.0" layoutY="198.0" text="Size">
+                              <TextField fx:id="txtPurchasingPrice" layoutX="50.0" layoutY="110.0" prefHeight="20.0" prefWidth="150.0" />
+                              <ComboBox fx:id="cmbSize" layoutX="50.0" layoutY="250.0" prefWidth="150.0" style="-fx-background-color: #D9E8FC;" />
+                              <Label alignment="CENTER" layoutX="50.0" layoutY="225.0" prefHeight="20.0" prefWidth="150.0" text="Size" textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnModify" layoutX="75.0" layoutY="272.0" mnemonicParsing="false" text="Modify">
+                              <Button fx:id="btnModify" layoutX="85.0" layoutY="300.0" mnemonicParsing="false" onAction="#onModifyClick" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Modify">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                               </Button>
-                              <Label layoutX="72.0" layoutY="133.0" prefHeight="26.0" prefWidth="104.0" text="Selling Price">
+                              <Label alignment="CENTER" layoutX="50.0" layoutY="155.0" prefHeight="20.0" prefWidth="150.0" text="Selling Price" textFill="WHITE">
                                  <font>
-                                    <Font size="17.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtSellingPrice" layoutX="47.0" layoutY="160.0" />
-                              <Button fx:id="btnAdd" layoutX="8.0" layoutY="272.0" mnemonicParsing="false" onAction="#onAddClick" text="Add">
+                              <TextField fx:id="txtSellingPrice" layoutX="50.0" layoutY="180.0" prefHeight="20.0" prefWidth="150.0" style="-fx-alignment: CENTER;" />
+                              <Button fx:id="btnAdd" layoutY="300.0" mnemonicParsing="false" onAction="#onAddClick" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Add" textAlignment="CENTER">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnDelete" layoutX="163.0" layoutY="272.0" mnemonicParsing="false" text="Delete">
+                              <Button fx:id="btnDelete" layoutX="170.0" layoutY="300.0" mnemonicParsing="false" onAction="#onDeleteClick" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Delete">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -69,101 +72,105 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Achat / Vente">
+            <Tab onSelectionChanged="#onOpenPS" text="Purchase/Sell">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="31.0" layoutY="73.0" prefHeight="340.0" prefWidth="265.0" />
-                        <Label layoutX="129.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Category" />
-                        <Label layoutX="325.0" layoutY="42.0" prefHeight="39.0" prefWidth="227.0" text="Quantity to purchase or sell" wrapText="true">
+                        <ListView fx:id="lvProductPS" layoutX="30.0" layoutY="80.0" prefHeight="340.0" prefWidth="265.0" style="-fx-pref-width: 280; -fx-pref-height: 350; -fx-background-color: #d2dce5;" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="12.0" prefHeight="20.0" prefWidth="100.0" style="-fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-pref-width: 100;" text="CATEGORY" textAlignment="CENTER">
                            <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtQuantityToChange" layoutX="377.0" layoutY="88.0" prefHeight="26.0" prefWidth="97.0" />
-                        <Label layoutX="358.0" layoutY="192.0" prefHeight="48.0" prefWidth="125.0" text="Cout / Bénéfices">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Text layoutX="340.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="à calculer avec la quantité" underline="true">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="btnPurchase" layoutX="341.0" layoutY="130.0" mnemonicParsing="false" onAction="#onPurchaseAction" text="Purchase">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnSell" layoutX="439.0" layoutY="130.0" mnemonicParsing="false" onAction="#onSellAction" text="Sell">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="385.0" layoutY="316.0" mnemonicParsing="false" text="Confirmed">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <ComboBox fx:id="cmbCategoryPS" layoutX="89.0" layoutY="42.0" prefWidth="150.0" />
+                              <Font size="14.0" />
+                           </font></Label>
+                        <ComboBox fx:id="cmbCategoryPS" layoutX="95.0" layoutY="40.0" onAction="#onCategoryActionPS" prefWidth="150.0" style="-fx-background-color: #D9E8FC; -fx-pref-width: 150; -fx-pref-height: 30;" />
+                        <AnchorPane layoutX="330.0" layoutY="80.0" prefHeight="340.0" prefWidth="250.0">
+                           <children>
+                              <TextField fx:id="txtQuantityToChange" layoutX="50.0" layoutY="100.0" prefHeight="20.0" prefWidth="150.0" />
+                              <Label alignment="CENTER" layoutY="25.0" prefHeight="20.0" prefWidth="250.0" text="Quantity to purchase or sell" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnPurchase" layoutX="10.0" layoutY="200.0" mnemonicParsing="false" onAction="#onPurchaseAction" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF; -fx-pref-width: 100;" text="Purchase">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnSell" layoutX="140.0" layoutY="200.0" mnemonicParsing="false" onAction="#onSellAction" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF; -fx-pref-width: 100;" text="Sell">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Discount">
+            <Tab onSelectionChanged="#onOpenDiscount" text="Discount">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="lvDiscount" layoutX="32.0" layoutY="72.0" prefHeight="340.0" prefWidth="178.0" />
-                        <ChoiceBox fx:id="cmbCategoryDiscount" layoutX="44.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" />
-                        <Label layoutX="86.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Catégories" />
-                        <Label layoutX="325.0" layoutY="136.0" text="Réduction actuelle">
+                        <ListView fx:id="lvProductDiscount" layoutX="30.0" layoutY="80.0" prefHeight="340.0" prefWidth="270.0" style="-fx-pref-height: 350; -fx-pref-width: 280; -fx-background-color: #d2dce5;" />
+                        <Label alignment="CENTER" layoutX="120.0" layoutY="12.0" prefHeight="20.0" prefWidth="100.0" style="-fx-text-fill: #FFFFFF; -fx-font-weight: bold;" text="CATEGORY">
                            <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <TextField layoutX="335.0" layoutY="192.0" prefHeight="26.0" prefWidth="111.0" />
-                        <Label layoutX="341.0" layoutY="158.0" text="en pourcentage">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="326.0" layoutY="251.0" mnemonicParsing="false" text="CONFIRMER">
-                           <font>
-                              <Font size="19.0" />
-                           </font>
-                        </Button>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <ComboBox fx:id="cmbCategoryDiscount" layoutX="95.0" layoutY="40.0" onAction="#onCategoryActionDiscount" prefWidth="150.0" style="-fx-background-color: #D9E8FC; -fx-pref-width: 150; -fx-pref-height: 30;" />
+                        <AnchorPane layoutX="330.0" layoutY="80.0" prefHeight="340.0" prefWidth="250.0">
+                           <children>
+                              <Button layoutX="75.0" layoutY="200.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Confirmed">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Button>
+                              <TextField layoutX="50.0" layoutY="125.0" prefHeight="20.0" prefWidth="150.0" />
+                              <Label alignment="CENTER" layoutX="100.0" layoutY="75.0" prefHeight="20.0" prefWidth="50.0" text="\%" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="25.0" layoutY="50.0" prefHeight="20.0" prefWidth="200.0" text="Discount to apply" textFill="WHITE">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                      </children></AnchorPane>
               </content>
             </Tab>
-            <Tab onSelectionChanged="#onOpenEconomy" text="Economie">
+            <Tab onSelectionChanged="#onOpenEconomy" text="Economy">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="64.0" layoutY="55.0" text="Revenus">
-                           <font>
-                              <Font size="27.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="61.0" layoutY="219.0" text="Dépenses">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Text fx:id="txtIncome" layoutX="64.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code">
-                           <font>
-                              <Font size="21.0" />
-                           </font></Text>
-                        <Text fx:id="txtCost" layoutX="62.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code">
-                           <font>
-                              <Font size="21.0" />
-                           </font></Text>
+                        <AnchorPane layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0">
+                           <children>
+                              <Label alignment="CENTER" layoutX="150.0" layoutY="14.0" prefHeight="50.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
+                                 <font>
+                                    <Font size="27.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="txtIncome" fill="#239600" layoutX="190.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Label alignment="CENTER" layoutX="150.0" layoutY="150.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Expenses" textFill="WHITE">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="txtCost" fill="#b10000" layoutX="190.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="btnClose" layoutX="572.0" mnemonicParsing="false" onAction="#closeButtonAction" text="X" textFill="#d72222" />
    </children>
 </AnchorPane>
