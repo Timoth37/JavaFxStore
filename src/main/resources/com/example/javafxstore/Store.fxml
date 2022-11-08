@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -32,13 +33,13 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtName" layoutX="50.0" layoutY="40.0" prefHeight="20.0" prefWidth="150.0" />
+                              <TextField fx:id="txtName" alignment="CENTER" layoutX="50.0" layoutY="40.0" prefHeight="20.0" prefWidth="150.0" />
                               <Label alignment="CENTER" layoutX="50.0" layoutY="85.0" prefHeight="20.0" prefWidth="150.0" text="Purchasing Price" textFill="WHITE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtPurchasingPrice" layoutX="50.0" layoutY="110.0" prefHeight="20.0" prefWidth="150.0" />
+                              <TextField fx:id="txtPurchasingPrice" alignment="CENTER" layoutX="50.0" layoutY="110.0" prefHeight="20.0" prefWidth="150.0" />
                               <ComboBox fx:id="cmbSize" layoutX="50.0" layoutY="250.0" prefWidth="150.0" style="-fx-background-color: #D9E8FC;" />
                               <Label alignment="CENTER" layoutX="50.0" layoutY="225.0" prefHeight="20.0" prefWidth="150.0" text="Size" textFill="WHITE">
                                  <font>
@@ -55,7 +56,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtSellingPrice" layoutX="50.0" layoutY="180.0" prefHeight="20.0" prefWidth="150.0" style="-fx-alignment: CENTER;" />
+                              <TextField fx:id="txtSellingPrice" alignment="CENTER" layoutX="50.0" layoutY="180.0" prefHeight="20.0" prefWidth="150.0" style="-fx-alignment: CENTER;" />
                               <Button fx:id="btnAdd" layoutY="300.0" mnemonicParsing="false" onAction="#onAddClick" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Add" textAlignment="CENTER">
                                  <font>
                                     <Font size="17.0" />
@@ -84,7 +85,7 @@
                         <ComboBox fx:id="cmbCategoryPS" layoutX="95.0" layoutY="40.0" onAction="#onCategoryActionPS" prefWidth="150.0" style="-fx-background-color: #D9E8FC; -fx-pref-width: 150; -fx-pref-height: 30;" />
                         <AnchorPane layoutX="330.0" layoutY="80.0" prefHeight="340.0" prefWidth="250.0">
                            <children>
-                              <TextField fx:id="txtQuantityToChange" layoutX="50.0" layoutY="100.0" prefHeight="20.0" prefWidth="150.0" />
+                              <TextField fx:id="txtQuantityToChange" alignment="CENTER" layoutX="50.0" layoutY="65.0" prefHeight="20.0" prefWidth="150.0" />
                               <Label alignment="CENTER" layoutY="25.0" prefHeight="20.0" prefWidth="250.0" text="Quantity to purchase or sell" textFill="WHITE" wrapText="true">
                                  <font>
                                     <Font size="17.0" />
@@ -100,6 +101,17 @@
                                     <Font size="16.0" />
                                  </font>
                               </Button>
+                              <CheckBox fx:id="checkDiscountPS" layoutX="25.0" layoutY="153.0" mnemonicParsing="false" onAction="#onCheckDiscountPS" prefWidth="200.0" text="apply sales discounts if they exist" />
+                              <Text fx:id="txtOldPrice" layoutX="80.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="20.0" style="-fx-strikethrough: true;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="txtNewPrice" layoutX="120.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="20.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
@@ -122,13 +134,13 @@
                                     <Font size="16.0" />
                                  </font>
                               </Button>
-                              <TextField fx:id="txtDiscount" layoutX="50.0" layoutY="125.0" onAction="#onDiscountClick" prefHeight="20.0" prefWidth="150.0" />
+                              <TextField fx:id="txtDiscount" alignment="CENTER" layoutX="50.0" layoutY="125.0" prefHeight="20.0" prefWidth="150.0" />
                               <Label alignment="CENTER" layoutX="100.0" layoutY="75.0" prefHeight="20.0" prefWidth="50.0" text="\%" textFill="WHITE">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" layoutX="25.0" layoutY="50.0" prefHeight="20.0" prefWidth="200.0" text="Discount to apply" textFill="WHITE">
+                              <Label alignment="CENTER" layoutX="25.0" layoutY="50.0" prefHeight="20.0" prefWidth="200.0" text="Discount applied" textFill="WHITE">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -144,24 +156,24 @@
                      <children>
                         <AnchorPane layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0">
                            <children>
-                              <Label alignment="CENTER" layoutX="121.0" layoutY="14.0" prefHeight="52.0" prefWidth="258.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
+                              <Label alignment="CENTER" layoutX="150.0" layoutY="14.0" prefHeight="50.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
                                  <font>
-                                    <Font size="42.0" />
+                                    <Font size="27.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="txtIncome" fill="#239600" layoutX="197.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                              <Text fx:id="txtIncome" fill="#239600" layoutX="190.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
                                  <font>
-                                    <Font size="22.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Text>
                               <Label alignment="CENTER" layoutX="150.0" layoutY="150.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Expenses" textFill="WHITE">
                                  <font>
-                                    <Font size="42.0" />
+                                    <Font size="25.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="txtCost" fill="#b10000" layoutX="196.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                              <Text fx:id="txtCost" fill="#b10000" layoutX="190.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
                                  <font>
-                                    <Font size="22.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Text>
                            </children>

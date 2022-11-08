@@ -11,17 +11,16 @@ public class DBManager {
         try {
             Connection myConn= this.Connector();
             Statement myStmt= myConn.createStatement();
-            String sql = "select * from product NATURAL JOIN "+category+";";
+            String sql = "select * from product NATURAL JOIN "+category+" NATURAL JOIN discount;";
             ResultSet myRs= myStmt.executeQuery(sql);
             while (myRs.next()) {
                 Product s;
                 if(category=="Clothe"){
-                    s= new Clothes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"),myRs.getInt("nbItems"),myRs.getInt("csize"));
+                    s= new Clothes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"), myRs.getInt("discountAmount"),myRs.getInt("nbItems"),myRs.getInt("csize"));
                 }else if(category=="Shoe"){
-                    s= new Shoes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"),myRs.getInt("nbItems"),myRs.getInt("ssize"));
+                    s= new Shoes(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"), myRs.getInt("discountAmount"),myRs.getInt("nbItems"),myRs.getInt("ssize"));
                 }else{
-                    System.out.println("Oui je rentre");
-                    s= new Accessories(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"),myRs.getInt("nbItems"));
+                    s= new Accessories(myRs.getInt("id"),myRs.getString("name"), myRs.getDouble("sellingPrice"), myRs.getDouble("purchasingPrice"), myRs.getInt("discountAmount"),myRs.getInt("nbItems"));
                 }
                 productAll.add(s);
             }
@@ -36,7 +35,7 @@ public class DBManager {
     public Connection Connector(){
         try {
             Connection connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store?", "root","Samsam4321");
+                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store?", "root","root");
             return connection;
         }
         catch (Exception e) {
@@ -71,7 +70,6 @@ public class DBManager {
             myStmt.setDouble(4, product.getSellingPrice());
             myStmt.setDouble(5, product.getPurchasingPrice());
             myStmt.setInt(6, product.getNbItems());
-            System.out.println(insertProduct);
             myStmt.execute();
             myStmt.close();
             if(product.getCategory()=="Clothe") {
@@ -89,7 +87,6 @@ public class DBManager {
                 myStmt.execute();
                 myStmt.close();
             }else if(product.getCategory()=="Accessory"){
-                System.out.println("la");
                 String insertAccessory = "INSERT INTO accessory (id) VALUES (?)";
                 myStmt = myConn.prepareStatement(insertAccessory);
                 myStmt.setInt(1, product.getNumber());
@@ -159,42 +156,16 @@ public class DBManager {
 
         }
     }
-
-    public void discountProduct(int id, int discount){
-        Connection myConn=null;
-        Statement myStmt = null;
-        ResultSet myRs= null;
-        try {
-            myConn = this.Connector();
-            myStmt = myConn.createStatement();
-            String modifyProduct = "UPDATE discount SET reduc='"+discount+  "' WHERE id="+id+";";
-            System.out.println(modifyProduct);
-            myStmt.execute(modifyProduct);
-            myStmt.close();
-
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        finally{
-            close(myConn,myStmt,myRs);
-        }
-    }
-
     public int loadDiscount(int id){
         int amount = 0;
         Connection myConn= this.Connector();
         try {
             Statement myStmt= myConn.createStatement();
-            String income = "select amount from discount where id="+id+";";
-
+            String income = "select discountAmount from product where id="+id+";";
             ResultSet myRs= myStmt.executeQuery(income);
             while (myRs.next()) {
-                amount = myRs.getInt("amount");
+                amount = myRs.getInt("discountAmount");
             }
-
-            System.out.println(amount);
-
             this.close(myConn, myStmt, myRs);
             return amount;
         } catch (SQLException e) {
@@ -202,7 +173,6 @@ public class DBManager {
         }
         return 0;
     }
-
     public void modifyDiscount(Product product,int amount){
         Connection myConn=null;
         Statement myStmt = null;
@@ -210,12 +180,10 @@ public class DBManager {
         try {
             myConn = this.Connector();
             myStmt = myConn.createStatement();
-            String modifyProduct = "UPDATE discount SET amount='"+amount +"'"+
+            String modifyProduct = "UPDATE product SET discountAmount='"+amount +"'"+
                     " WHERE id="+product.getNumber()+";";
-            System.out.println(modifyProduct);
             myStmt.execute(modifyProduct);
             myStmt.close();
-
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -224,7 +192,6 @@ public class DBManager {
             close(myConn,myStmt,myRs);
         }
     }
-
     public Double loadIncome(){
         Double incomeValue= 0.000;
         Connection myConn= this.Connector();
@@ -262,7 +229,7 @@ public class DBManager {
         }
         return null;
     }
-    public void operationProduct(Product product, double diffItem){
+    public void operationProduct(Product product, double diffItem,boolean discountOn){
         Connection myConn=null;
         Statement myStmt = null;
         try{
@@ -274,7 +241,9 @@ public class DBManager {
             myStmt.close();
             myStmt = myConn.createStatement();
             String updateIncomesOutcomes;
-            if(diffItem<0){
+            if(diffItem<0 && discountOn){
+                updateIncomesOutcomes = "INSERT INTO actions(id,gain) VALUES(" +product.getNumber()+","+(-product.getSellingPrice()*(1-product.getDiscount()/100.0)*diffItem)+");";
+            }else if (diffItem<0){
                 updateIncomesOutcomes = "INSERT INTO actions(id,gain) VALUES(" +product.getNumber()+","+(-product.getSellingPrice()*diffItem)+");";
             }else{
                 updateIncomesOutcomes = "INSERT INTO actions(id,gain) VALUES(" +product.getNumber()+","+(-product.getPurchasingPrice()*diffItem)+");";

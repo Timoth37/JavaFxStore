@@ -40,14 +40,18 @@ id int NOT NULL,
 reduc int);
 
 
-select sum(gain) from actions where gain>0;
+DROP TABLE IF EXISTS discount;
+CREATE TABLE discount(
+id int NOT NULL,
+amount int,
+FOREIGN KEY (id) REFERENCES product(id) ON DELETE CASCADE);
 
 
 
 select * from product;
 select * from clothe;
 select * from accessory;
-UPDATE product SET name='Jean LEVIS 2', purchasingPrice=10.0, sellingPrice= 20.0 WHERE id=2;
 SELECT * FROM product NATURAL JOIN clothe;
 SELECT * FROM product NATURAL JOIN clothe;
 select * from actions;
+select * from discount;

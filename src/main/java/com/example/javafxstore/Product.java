@@ -7,7 +7,7 @@ public abstract class Product implements Discount{
     private double sellingPrice;
     private double purchasingPrice;
     private int nbItems;
-
+    private int discount;
     static double income =0;
     static double outcome =0;
 
@@ -18,7 +18,6 @@ public abstract class Product implements Discount{
     }
 
     public class CustomizedException extends Exception {
-        //we can have attributes
         String message ;
         public CustomizedException(String message) {
             this.message=message;
@@ -77,10 +76,12 @@ public abstract class Product implements Discount{
         this.purchasingPrice = purchasingPrice;
     }
 
+    public int getDiscount(){return discount;}
+    public void setDiscount(int discount){this.discount=discount;}
+
     public int getNbItems() {
         return nbItems;
     }
-
     public void setNbItems(int nbItems) {
         try {
             if(nbItems<0){
@@ -91,33 +92,13 @@ public abstract class Product implements Discount{
             System.out.println(e.getMessage());
         }
     }
-    public Product(String name, String category,double sellingPrice, double purchasingPrice, int nbItems){
+    public Product(String name, String category,double sellingPrice, double purchasingPrice, int discount, int nbItems){
         this.name=name;
         this.category= category;
-        try {
-            if(purchasingPrice<0){
-                throw new CustomizedException("Negative price");
-            }
-            this.purchasingPrice=purchasingPrice;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        try {
-            if(sellingPrice<0){
-                throw new CustomizedException("Negative price");
-            }
-            this.sellingPrice=sellingPrice;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        try {
-            if(nbItems<0){
-                throw new CustomizedException("Negative number of items");
-            }
-            this.nbItems=nbItems;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+        this.purchasingPrice=purchasingPrice;
+        this.sellingPrice=sellingPrice;
+        this.discount = discount;
+        this.nbItems=nbItems;
         this.number = ++count;
     }
 

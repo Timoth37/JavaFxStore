@@ -18,8 +18,8 @@ public class Clothes extends Product {
         }
     }
 
-    public Clothes(String name, double sellingPrice, double purchasingPrice, int nbItems, int size){
-        super(name, "Clothe", sellingPrice, purchasingPrice, nbItems);
+    public Clothes(String name, double sellingPrice, double purchasingPrice, int discount, int nbItems, int size){
+        super(name, "Clothe", sellingPrice, purchasingPrice, discount, nbItems);
         try {
             if(size>54 || size<34 || size%2!=0){
                 throw new CustomizedException("Wrong size");
@@ -30,8 +30,8 @@ public class Clothes extends Product {
         }
     }
 
-    public Clothes(int number, String name, double sellingPrice, double purchasingPrice, int nbItems, int size){
-        super(name, "Clothe", sellingPrice, purchasingPrice, nbItems);
+    public Clothes(int number, String name, double sellingPrice, double purchasingPrice,int discount,int nbItems, int size){
+        super(name, "Clothe", sellingPrice, purchasingPrice, discount,nbItems);
         try {
             if(size>54 || size<34 || size%2!=0){
                 throw new CustomizedException("Wrong size");
@@ -45,10 +45,10 @@ public class Clothes extends Product {
 
     @Override
     public String toString() {
-        return this.getNumber() + " | " +
-                this.getName() + " | " +
-                this.getNbItems()+" | "+
-                this.getCategory();
+        return "ID : "+this.getNumber() + " | " +
+                "Product : "+this.getName() + " | " +
+                "Price : "+this.getSellingPrice() +" € | "+
+                "Qty : "+this.getNbItems();
     }
 
     @Override

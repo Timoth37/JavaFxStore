@@ -3,20 +3,20 @@ package com.example.javafxstore;
 public class Accessories extends Product {
 
 
-    public Accessories(String name, double sellingPrice,double purchasingPrice, int nbItems){
-        super(name, "Accessory", sellingPrice,purchasingPrice, nbItems);
+    public Accessories(String name, double sellingPrice,double purchasingPrice, int discount, int nbItems){
+        super(name, "Accessory", sellingPrice,purchasingPrice, discount, nbItems);
     }
-    public Accessories(int number,String name, double sellingPrice,double purchasingPrice, int nbItems){
-        super(name, "Accessory", sellingPrice,purchasingPrice, nbItems);
+    public Accessories(int number,String name, double sellingPrice,double purchasingPrice, int discount, int nbItems){
+        super(name, "Accessory", sellingPrice,purchasingPrice, discount, nbItems);
         this.setNumber(number);
     }
 
     @Override
     public String toString() {
-        return this.getNumber() + " | " +
-                this.getName() + " | " +
-                this.getNbItems()+" | "+
-                this.getCategory();
+        return "ID : "+this.getNumber() + " | " +
+                "Product : "+this.getName() + " | " +
+                "Price : "+this.getSellingPrice() +" € | "+
+                "Qty : "+this.getNbItems();
     }
 
     @Override
