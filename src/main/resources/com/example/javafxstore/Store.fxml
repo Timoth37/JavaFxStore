@@ -117,12 +117,12 @@
                         <ComboBox fx:id="cmbCategoryDiscount" layoutX="95.0" layoutY="40.0" onAction="#onCategoryActionDiscount" prefWidth="150.0" style="-fx-background-color: #D9E8FC; -fx-pref-width: 150; -fx-pref-height: 30;" />
                         <AnchorPane layoutX="330.0" layoutY="80.0" prefHeight="340.0" prefWidth="250.0">
                            <children>
-                              <Button layoutX="75.0" layoutY="200.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Confirmed">
+                              <Button fx:id="btnDiscount" layoutX="75.0" layoutY="200.0" mnemonicParsing="false" onAction="#onDiscountClick" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #363738; -fx-text-fill: #FFFFFF;" text="Confirmed">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Button>
-                              <TextField layoutX="50.0" layoutY="125.0" prefHeight="20.0" prefWidth="150.0" />
+                              <TextField fx:id="txtDiscount" layoutX="50.0" layoutY="125.0" onAction="#onDiscountClick" prefHeight="20.0" prefWidth="150.0" />
                               <Label alignment="CENTER" layoutX="100.0" layoutY="75.0" prefHeight="20.0" prefWidth="50.0" text="\%" textFill="WHITE">
                                  <font>
                                     <Font size="15.0" />
@@ -144,24 +144,24 @@
                      <children>
                         <AnchorPane layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0">
                            <children>
-                              <Label alignment="CENTER" layoutX="150.0" layoutY="14.0" prefHeight="50.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
+                              <Label alignment="CENTER" layoutX="121.0" layoutY="14.0" prefHeight="52.0" prefWidth="258.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
                                  <font>
-                                    <Font size="27.0" />
+                                    <Font size="42.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="txtIncome" fill="#239600" layoutX="190.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                              <Text fx:id="txtIncome" fill="#239600" layoutX="197.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font size="22.0" />
                                  </font>
                               </Text>
                               <Label alignment="CENTER" layoutX="150.0" layoutY="150.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Expenses" textFill="WHITE">
                                  <font>
-                                    <Font size="25.0" />
+                                    <Font size="42.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="txtCost" fill="#b10000" layoutX="190.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
+                              <Text fx:id="txtCost" fill="#b10000" layoutX="196.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font size="22.0" />
                                  </font>
                               </Text>
                            </children>

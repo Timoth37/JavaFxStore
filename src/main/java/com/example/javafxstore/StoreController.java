@@ -50,6 +50,9 @@ public class StoreController implements Initializable{
     @FXML
     private Text txtCost;
 
+    @FXML
+    private TextField txtDiscount;
+
     DBManager manager;
 
     public class CustomizedException extends Exception {
@@ -87,6 +90,22 @@ public class StoreController implements Initializable{
                 } else if (cmbCategoryInv.getValue() == "Shoes") {
                     Shoes shoe = (Shoes) newVal;
                     displayProductDetails(shoe, shoe.getShoeSize());
+                }
+            }catch(Exception e){
+
+            }
+        });
+        lvProductDiscount.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            try{
+                if (cmbCategoryDiscount.getValue() == "Clothes") {
+                    Clothes clothe = (Clothes) newVal;
+                    displayProductDetailsDiscount(clothe);
+                } else if (cmbCategoryDiscount.getValue() == "Accessories") {
+                    Accessories accessory = (Accessories) newVal;
+                    displayProductDetailsDiscount(accessory);
+                } else if (cmbCategoryDiscount.getValue() == "Shoes") {
+                    Shoes shoe = (Shoes) newVal;
+                    displayProductDetailsDiscount(shoe);
                 }
             }catch(Exception e){
 
@@ -135,6 +154,8 @@ public class StoreController implements Initializable{
             }
         }
     }
+
+
     public void onAddClick() {
 
         try{
@@ -270,11 +291,50 @@ public class StoreController implements Initializable{
         fetchProducts("Clothe",lvProductPS);
     }
     @FXML
-    private void onOpenDiscount(){
+    private void onOpenDiscount() {
         cmbCategoryDiscount.setValue("Clothes");
-        fetchProducts("Clothe",lvProductDiscount);
+        fetchProducts("Clothe", lvProductDiscount);
 
     }
+
+
+    private void displayProductDetailsDiscount(Product selectedProduct) {
+        if(selectedProduct!=null){
+            int amount = manager.loadDiscount(selectedProduct.getNumber());
+            txtDiscount.setText(Integer.toString(amount));
+        }
+    }
+
+    @FXML
+    public void onDiscountClick(){
+        try {
+            System.out.println("ici");
+            if (cmbCategoryDiscount.getValue() == "Clothes") {
+                Clothes clothe = (Clothes) lvProductDiscount.getSelectionModel().getSelectedItem();
+                manager.modifyDiscount(clothe, Integer.parseInt(txtDiscount.getText()));
+                fetchProducts("Clothe", lvProductDiscount);
+
+            } else if (cmbCategoryDiscount.getValue() == "Shoes") {
+                Shoes shoe = (Shoes) lvProductDiscount.getSelectionModel().getSelectedItem();
+                manager.modifyDiscount(shoe, Integer.parseInt(txtDiscount.getText()));
+                fetchProducts("Shoe", lvProductDiscount);
+
+            } else {
+                Accessories accessory = (Accessories) lvProductDiscount.getSelectionModel().getSelectedItem();
+                manager.modifyDiscount(accessory, Integer.parseInt(txtDiscount.getText()));
+                fetchProducts("Accessory", lvProductDiscount);
+            }
+
+
+        }catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You must select an item to modify");
+            alert.showAndWait();
+        }
+    }
+
     @FXML
     private void onOpenEconomy(){
         Double income = manager.loadIncome();
