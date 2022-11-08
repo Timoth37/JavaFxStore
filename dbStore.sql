@@ -34,6 +34,11 @@ CREATE TABLE actions(
 id int NOT NULL,
 gain int);
 
+DROP TABLE IF EXISTS discount;
+CREATE TABLE discount(
+id int NOT NULL,
+reduc int);
+
 
 select sum(gain) from actions where gain>0;
 

@@ -36,7 +36,7 @@ public class DBManager {
     public Connection Connector(){
         try {
             Connection connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store?", "root","root");
+                    DriverManager.getConnection("jdbc:mysql://localhost:3306/store?", "root","Samsam4321");
             return connection;
         }
         catch (Exception e) {
@@ -96,6 +96,12 @@ public class DBManager {
                 myStmt.execute();
                 myStmt.close();
             }
+            String insertDiscount = "INSERT INTO discount (id, amount) VALUES (?,?)";
+            myStmt = myConn.prepareStatement(insertDiscount);
+            myStmt.setInt(1, product.getNumber());
+            myStmt.setInt(2, 0);
+            myStmt.execute();
+            myStmt.close();
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -153,6 +159,72 @@ public class DBManager {
 
         }
     }
+
+    public void discountProduct(int id, int discount){
+        Connection myConn=null;
+        Statement myStmt = null;
+        ResultSet myRs= null;
+        try {
+            myConn = this.Connector();
+            myStmt = myConn.createStatement();
+            String modifyProduct = "UPDATE discount SET reduc='"+discount+  "' WHERE id="+id+";";
+            System.out.println(modifyProduct);
+            myStmt.execute(modifyProduct);
+            myStmt.close();
+
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally{
+            close(myConn,myStmt,myRs);
+        }
+    }
+
+    public int loadDiscount(int id){
+        int amount = 0;
+        Connection myConn= this.Connector();
+        try {
+            Statement myStmt= myConn.createStatement();
+            String income = "select amount from discount where id="+id+";";
+
+            ResultSet myRs= myStmt.executeQuery(income);
+            while (myRs.next()) {
+                amount = myRs.getInt("amount");
+            }
+
+            System.out.println(amount);
+
+            this.close(myConn, myStmt, myRs);
+            return amount;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void modifyDiscount(Product product,int amount){
+        Connection myConn=null;
+        Statement myStmt = null;
+        ResultSet myRs= null;
+        try {
+            myConn = this.Connector();
+            myStmt = myConn.createStatement();
+            String modifyProduct = "UPDATE discount SET amount='"+amount +"'"+
+                    " WHERE id="+product.getNumber()+";";
+            System.out.println(modifyProduct);
+            myStmt.execute(modifyProduct);
+            myStmt.close();
+
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally{
+            close(myConn,myStmt,myRs);
+        }
+    }
+
     public Double loadIncome(){
         Double incomeValue= 0.000;
         Connection myConn= this.Connector();
