@@ -9,6 +9,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -156,26 +159,49 @@
                      <children>
                         <AnchorPane layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0">
                            <children>
-                              <Label alignment="CENTER" layoutX="150.0" layoutY="14.0" prefHeight="50.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Sales figures" textFill="WHITE">
-                                 <font>
-                                    <Font size="27.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="txtIncome" fill="#239600" layoutX="190.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Text>
-                              <Label alignment="CENTER" layoutX="150.0" layoutY="150.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-weight: bold;" text="Expenses" textFill="WHITE">
-                                 <font>
-                                    <Font size="25.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="txtCost" fill="#b10000" layoutX="190.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A calculer avec du code" underline="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Text>
+                              <GridPane layoutX="90.0" layoutY="89.0" prefHeight="198.0" prefWidth="320.0" style="-fx-background-color: #D9E8FC; -fx-border-color: white; -fx-border-radius: 20; -fx-background-radius: 20; -fx-border-width: 2;">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="216.8000244140625" minWidth="10.0" prefWidth="216.8000244140625" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.79998779296875" minWidth="10.0" prefWidth="102.59997558593747" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="57.599951171875" minHeight="0.0" prefHeight="53.599951171875" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="108.8" minHeight="10.0" prefHeight="55.200048828125" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="108.8" minHeight="10.0" prefHeight="55.200048828125" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label prefHeight="38.0" prefWidth="209.0" style="-fx-font-weight: bold; -fx-font-size: 26;" text=" Sales Figure      :" textFill="#6b6b6b">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="38.0" prefWidth="217.0" style="-fx-font-weight: bold; -fx-font-size: 26;" text=" Expenses           :" textFill="#6b6b6b" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="txtIncome" fill="#6b6b6b" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="0 €" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="txtCost" fill="#6b6b6b" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="0 €" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                    <Label prefHeight="38.0" prefWidth="217.0" style="-fx-font-weight: bold; -fx-font-size: 26;" text=" Profit                 :" textFill="#6b6b6b" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="txtProfit" fill="#6b6b6b" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="0 €" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
                            </children>
                         </AnchorPane>
                      </children>

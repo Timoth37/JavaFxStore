@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +59,9 @@ public class StoreController implements Initializable{
     private Text txtOldPrice;
     @FXML
     DBManager manager;
+
+    @FXML
+    private Text txtProfit;
     public void initialize(URL url, ResourceBundle resourceBundle) {
         manager = new DBManager();
         List<String> cValues = new ArrayList<String>();
@@ -121,6 +126,8 @@ public class StoreController implements Initializable{
         if(selectedCat=="Accessories"){
             cmbSize.setDisable(true);
             checkDiscountPS.setSelected(false);
+            txtNewPrice.setText("");
+            txtOldPrice.setText("");
             fetchProducts("Accessory", listView);
         } else if(selectedCat=="Shoes"){
             cmbSize.setDisable(false);
@@ -129,6 +136,8 @@ public class StoreController implements Initializable{
             for(int i =36; i<=50 ; i++){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(36);
+            txtNewPrice.setText("");
+            txtOldPrice.setText("");
             fetchProducts("Shoe", listView);
         } else{
             cmbSize.setDisable(false);
@@ -137,6 +146,8 @@ public class StoreController implements Initializable{
             for(int i =34; i<=54 ; i+=2){sValues.add(i);}
             cmbSize.setItems(FXCollections.observableArrayList(sValues));
             cmbSize.setValue(34);
+            txtNewPrice.setText("");
+            txtOldPrice.setText("");
             fetchProducts("Clothe", listView);
         }
     }
@@ -274,10 +285,11 @@ public class StoreController implements Initializable{
             boolean discountOn = false;
             if(checkDiscountPS.isSelected()==true)
                 discountOn = true;
-            if (Double.parseDouble(txtQuantityToChange.getText()) < 0){
+            if (Double.parseDouble(txtQuantityToChange.getText()) < 0)
                 throw new Exception();
-            }
             Product soldProduct = (Product) lvProductPS.getSelectionModel().getSelectedItem();
+            if(Double.parseDouble(txtQuantityToChange.getText())> soldProduct.getNbItems())
+                throw new Exception();
             manager.operationProduct(soldProduct,-Double.parseDouble(txtQuantityToChange.getText()), discountOn);
             fetchProducts(soldProduct.getCategory(), lvProductPS);
         }catch(Exception e){
@@ -285,7 +297,8 @@ public class StoreController implements Initializable{
             alert.setTitle("ERROR");
             alert.setHeaderText(null);
             alert.setContentText("You must select an item to purchase.\n" +
-                    "If an item is selected, please enter a positive quantity to sell");
+                    "If an item is selected, please enter a positive quantity to sell.\n" +
+                    "You cannot sell more items than you own ");
             alert.showAndWait();
         }
     }
@@ -339,17 +352,29 @@ public class StoreController implements Initializable{
     private void onOpenEconomy(){
         Double income = manager.loadIncome();
         Double cost = manager.loadCost();
-        txtIncome.setText(income.toString()+" euros");
-        txtCost.setText(cost.toString()+" euros");
+        txtIncome.setText(income.toString()+" €");
+        txtCost.setText(cost.toString()+" €");
+        Double profit = income-cost;
+        txtProfit.setText(profit.toString()+ " €");
+        Color color;
+        if(profit<0)
+            color = Color.RED;
+        else
+            color = Color.GREEN;
+        txtProfit.setFill(color);
+
+
     }
     @FXML
     private void onCheckDiscountPS(){
         if(checkDiscountPS.isSelected())
         {
             Product product = (Product) lvProductPS.getSelectionModel().getSelectedItem();
-            if(product!=null){
+            if(product!=null && product.getDiscount()!=0){
                 txtOldPrice.setText(Double.toString(product.getSellingPrice()));
                 txtNewPrice.setText("--> "+Double.toString(product.getSellingPrice()*(1-product.getDiscount()/100.0)));
+            }else if(product!=null){
+                txtNewPrice.setText("No Discount");
             }
         }else{
             txtOldPrice.setText("");
