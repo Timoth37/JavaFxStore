@@ -11,7 +11,7 @@ public class DBManager {
         try {
             Connection myConn= this.Connector();
             Statement myStmt= myConn.createStatement();
-            String sql = "select * from product NATURAL JOIN "+category+" NATURAL JOIN discount;";
+            String sql = "select * from product NATURAL JOIN "+category+";";
             ResultSet myRs= myStmt.executeQuery(sql);
             while (myRs.next()) {
                 Product s;
@@ -62,14 +62,15 @@ public class DBManager {
         ResultSet myRs= null;
         try {
             myConn = this.Connector();
-            String insertProduct = "INSERT INTO product (id,name,category,sellingPrice, purchasingPrice, nbItems) VALUES (?,?,?,?,?,?)";
+            String insertProduct = "INSERT INTO product (id,name,category,sellingPrice, purchasingPrice, discountAmount, nbItems) VALUES (?,?,?,?,?,?,?)";
             myStmt = myConn.prepareStatement(insertProduct);
             myStmt.setInt(1, product.getNumber());
             myStmt.setString(2, product.getName());
             myStmt.setString(3, product.getCategory());
             myStmt.setDouble(4, product.getSellingPrice());
             myStmt.setDouble(5, product.getPurchasingPrice());
-            myStmt.setInt(6, product.getNbItems());
+            myStmt.setDouble(6, product.getDiscount());
+            myStmt.setInt(7, product.getNbItems());
             myStmt.execute();
             myStmt.close();
             if(product.getCategory()=="Clothe") {
@@ -93,12 +94,6 @@ public class DBManager {
                 myStmt.execute();
                 myStmt.close();
             }
-            String insertDiscount = "INSERT INTO discount (id, amount) VALUES (?,?)";
-            myStmt = myConn.prepareStatement(insertDiscount);
-            myStmt.setInt(1, product.getNumber());
-            myStmt.setInt(2, 0);
-            myStmt.execute();
-            myStmt.close();
         }
         catch(Exception e){
             System.out.println(e.getMessage());

@@ -9,6 +9,7 @@ name varchar(40),
 category varchar(40),
 sellingPrice Double,
 purchasingPrice Double,
+discountAmount int,
 nbItems integer,
 PRIMARY KEY(id));
 
@@ -38,14 +39,6 @@ DROP TABLE IF EXISTS discount;
 CREATE TABLE discount(
 id int NOT NULL,
 reduc int);
-
-
-DROP TABLE IF EXISTS discount;
-CREATE TABLE discount(
-id int NOT NULL,
-amount int,
-FOREIGN KEY (id) REFERENCES product(id) ON DELETE CASCADE);
-
 
 
 select * from product;
